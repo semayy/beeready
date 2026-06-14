@@ -3,716 +3,994 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Beeready | 10-Day Speed Reading</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@500;700&display=swap" rel="stylesheet">
+    <title>BeeReady | Premium Hızlı Okuma ve Anlama Kampı</title>
     
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Config -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['Fira Code', 'monospace'] },
                     colors: { 
+                        bee: '#fbbf24', // amber-400
+                        beeDark: '#f59e0b', // amber-500
+                        navy: '#0f172a', // slate-900
                         glass: 'rgba(255, 255, 255, 0.05)', 
                         glassBorder: 'rgba(255, 255, 255, 0.1)',
-                        beeYellow: '#fbbf24', // Amber-400
-                        beeDark: '#171717'
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(251, 191, 36, 0.3)',
+                        'glow-lg': '0 0 40px rgba(251, 191, 36, 0.4)',
                     }
                 }
             }
         }
     </script>
-
+    
     <style>
-        body { background-color: #0f172a; color: #f1f5f9; overflow-x: hidden; touch-action: manipulation; }
+        :root {
+            --bg-color: #0f172a;
+            --text-color: #f8fafc;
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            overflow-x: hidden; 
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior-y: none;
+        }
+
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(251, 191, 36, 0.5); }
+        ::-webkit-scrollbar-thumb { background: rgba(251, 191, 36, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(251, 191, 36, 0.6); }
         
-        @keyframes pulse-slow { 0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.2; } 50% { transform: scale(1.1) translate(5%, 5%); opacity: 0.4; } }
-        @keyframes pulse-slow-alt { 0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.15; } 50% { transform: scale(1.15) translate(-5%, 5%); opacity: 0.3; } }
+        /* Animated Blobs */
+        @keyframes float-1 { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.15; } 50% { transform: translate(5%, 5%) scale(1.1); opacity: 0.25; } }
+        @keyframes float-2 { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.1; } 50% { transform: translate(-5%, 5%) scale(1.15); opacity: 0.2; } }
+        .blob-1 { animation: float-1 15s ease-in-out infinite; background: radial-gradient(circle, #fbbf24 0%, transparent 70%); }
+        .blob-2 { animation: float-2 18s ease-in-out infinite alternate; background: radial-gradient(circle, #3b82f6 0%, transparent 70%); }
         
-        .blob-1 { animation: pulse-slow 15s ease-in-out infinite; }
-        .blob-2 { animation: pulse-slow-alt 12s ease-in-out infinite alternate; }
-        .blob-3 { animation: pulse-slow 18s ease-in-out infinite reverse; }
+        /* Screen Transitions */
+        .screen { display: none; opacity: 0; transform: translateY(10px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .screen.active { display: flex; opacity: 1; transform: translateY(0); }
         
-        .orp-container { display: flex; align-items: center; justify-content: center; width: 100%; }
+        /* ORP Typography */
+        .orp-container { display: flex; align-items: center; justify-content: center; width: 100%; white-space: pre; }
         .orp-left { flex: 1; text-align: right; }
-        .orp-center { color: #fbbf24; font-weight: bold; text-shadow: 0 0 15px rgba(251,191,36,0.5); }
+        .orp-center { color: #fbbf24; font-weight: 900; text-shadow: 0 0 15px rgba(251, 191, 36, 0.6); }
         .orp-right { flex: 1; text-align: left; }
-        
-        .screen { display: none; opacity: 0; transition: opacity 0.3s ease-in-out; }
-        .screen.active { display: flex; opacity: 1; }
-        
-        input[type=range] { -webkit-appearance: none; background: rgba(255,255,255,0.1); border-radius: 8px; height: 8px; outline: none; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #fbbf24; cursor: pointer; box-shadow: 0 0 15px rgba(251, 191, 36, 0.6); }
-        
-        .day-node.locked { filter: grayscale(100%); opacity: 0.5; cursor: not-allowed; }
-        .day-node.active-node { border-color: #fbbf24; box-shadow: 0 0 25px rgba(251,191,36,0.2); }
-        .day-node.completed { border-color: #a855f7; background: rgba(168,85,247,0.15); }
 
-        /* Mobil Optimizasyonlar */
-        @media (max-width: 640px) {
-            .orp-center { font-size: 1.1em; }
-            #word-display { font-size: 2.5rem; line-height: 1.2; }
-            .day-node { flex-direction: column; text-align: center; gap: 0.5rem; }
+        /* Sliders */
+        input[type=range] { -webkit-appearance: none; background: rgba(255,255,255,0.1); border-radius: 8px; height: 6px; outline: none; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #fbbf24; cursor: pointer; box-shadow: 0 0 10px rgba(251, 191, 36, 0.5); transition: transform 0.1s; }
+        input[type=range]::-webkit-slider-thumb:active { transform: scale(1.2); }
+        
+        /* Maps & Nodes */
+        .day-node { transition: all 0.2s ease; }
+        .day-node.locked { filter: grayscale(100%); opacity: 0.4; cursor: not-allowed; }
+        .day-node.active-node { border-color: #fbbf24; box-shadow: 0 0 25px rgba(251, 191, 36, 0.15); transform: scale(1.02); }
+        .day-node.completed { border-color: #4ade80; background: rgba(74, 222, 128, 0.05); }
+
+        /* Eye Gym Target */
+        #eye-gym-target {
+            position: absolute; width: 28px; height: 28px; background-color: #fbbf24; border-radius: 50%;
+            box-shadow: 0 0 20px #fbbf24, inset 0 0 10px #b45309; transition: transform 0.05s linear; z-index: 50; display: none;
+            display: flex; align-items: center; justify-content: center;
+        }
+        #eye-gym-target::after { content: ''; width: 12px; height: 12px; background: #fff; border-radius: 50%; opacity: 0.8; }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #0f172a;
+            box-shadow: 0 10px 25px -5px rgba(251, 191, 36, 0.4);
+            transition: all 0.2s;
+        }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 15px 30px -5px rgba(251, 191, 36, 0.5); }
+        .btn-primary:active:not(:disabled) { transform: translateY(0); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .reading-area {
+            background: radial-gradient(circle at center, rgba(30,41,59,0.8) 0%, rgba(15,23,42,0.95) 100%);
         }
     </style>
 </head>
-<body class="min-h-[100dvh] relative font-sans antialiased flex flex-col overflow-hidden">
+<body class="min-h-screen flex flex-col antialiased selection:bg-bee selection:text-navy">
 
+    <!-- Ambient Background -->
     <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-yellow-600 rounded-full mix-blend-screen filter blur-[120px] blob-1"></div>
-        <div class="absolute top-[30%] right-[-10%] w-[600px] h-[600px] bg-orange-500 rounded-full mix-blend-screen filter blur-[150px] blob-2"></div>
-        <div class="absolute bottom-[-20%] left-[20%] w-[500px] h-[500px] bg-purple-600 rounded-full mix-blend-screen filter blur-[120px] blob-3"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full mix-blend-screen filter blur-[100px] blob-1"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full mix-blend-screen filter blur-[120px] blob-2"></div>
     </div>
 
-    <div class="relative z-10 container mx-auto px-4 py-4 shrink-0">
-        <header class="flex justify-between items-center bg-glass backdrop-blur-xl border border-glassBorder p-3 md:p-4 rounded-2xl shadow-lg">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="sfx.click(); app.navigate(appState.user ? 'dashboard' : 'onboarding')">
-                <div class="bg-gradient-to-br from-yellow-400 to-orange-500 p-2 rounded-xl shadow-[0_0_15px_rgba(251,191,36,0.4)]">
-                    <!-- Özel Arı İkonu SVG -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#ffffff" viewBox="0 0 256 256"><path d="M239.11,104.22a56,56,0,0,0-78.55-16.1,64,64,0,0,0-64.88-.13A56,56,0,0,0,16.89,151.78,56.12,56.12,0,0,0,32,192a55.8,55.8,0,0,0,32.33,14,56.55,56.55,0,0,0,16.48-.48A63.92,63.92,0,0,0,112,224v8a8,8,0,0,0,16,0v-8a63.92,63.92,0,0,0,31.19-18.49,56.55,56.55,0,0,0,16.48.48,56,56,0,0,0,63.44-87.89ZM73.74,188.4a40,40,0,1,1-35.45-56.74,39.42,39.42,0,0,1,16-.6,47.88,47.88,0,0,1,19.33-40.42,48.06,48.06,0,0,1,34.8-6.19A64.12,64.12,0,0,0,112,112v40a64.06,64.06,0,0,0-5.83,26.85A48,48,0,0,1,73.74,188.4Zm129,5.55a40,40,0,0,1-54.89-14.8,48,48,0,0,1-35.83,3.7A64.06,64.06,0,0,0,144,152V112a64.12,64.12,0,0,0,3.58-26.35,48.06,48.06,0,0,1,34.8,6.19,47.88,47.88,0,0,1,19.33,40.42,39.42,39.42,0,0,1,16-.6A40,40,0,0,1,202.73,194Z"></path></svg>
+    <!-- Header -->
+    <div class="relative z-10 w-full max-w-6xl mx-auto px-4 py-4 shrink-0">
+        <header class="flex justify-between items-center glass-panel p-4 rounded-3xl">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="app.navigate(appState.user ? 'dashboard' : 'onboarding')">
+                <div class="w-12 h-12 bg-gradient-to-br from-bee to-beeDark rounded-2xl flex items-center justify-center shadow-glow">
+                    <i class="ph-fill ph-hexagon text-3xl text-navy"></i>
                 </div>
-                <h1 class="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">
-                    Beeready <span class="text-[10px] md:text-xs text-beeYellow uppercase tracking-widest hidden md:inline-block">Bootcamp</span>
-                </h1>
+                <div class="flex flex-col">
+                    <h1 class="text-2xl font-black tracking-tight text-white leading-none">
+                        Bee<span class="text-bee">Ready</span>
+                    </h1>
+                    <span class="text-[10px] text-bee/70 uppercase tracking-widest font-bold mt-0.5">Akademik Okuma</span>
+                </div>
             </div>
-            <div class="flex items-center gap-3 md:gap-4">
-                <button id="lang-btn" class="px-3 py-1 rounded-lg border border-white/20 hover:bg-white/10 font-mono text-xs md:text-sm transition-all" onclick="sfx.click(); app.toggleLang()">EN</button>
-                <div id="user-mini-profile" class="hidden items-center gap-2 px-3 py-1 bg-white/5 rounded-lg border border-white/10">
-                    <i class="ph-fill ph-star text-beeYellow"></i>
-                    <span id="header-level" class="font-bold text-xs md:text-sm">Lvl 1</span>
+            
+            <div id="header-profile" class="hidden items-center gap-4">
+                <div class="hidden md:flex flex-col items-end">
+                    <span id="header-name" class="text-sm font-bold text-white"></span>
+                    <span id="header-xp" class="text-xs text-bee font-mono"></span>
+                </div>
+                <div class="h-10 px-3 bg-white/5 border border-white/10 rounded-xl flex items-center gap-2">
+                    <i class="ph-fill ph-lightning text-bee"></i>
+                    <span id="header-level" class="font-bold text-sm"></span>
                 </div>
             </div>
         </header>
     </div>
 
-    <div class="relative z-10 container mx-auto px-4 pb-6 flex-1 flex flex-col h-[calc(100%-80px)] overflow-hidden">
+    <!-- Main Content Area -->
+    <div class="relative z-10 w-full max-w-6xl mx-auto px-4 pb-8 flex-1 flex flex-col h-full">
 
         <!-- 1. ONBOARDING SCREEN -->
-        <main id="onboarding-screen" class="screen flex-col items-center justify-center max-w-2xl mx-auto w-full flex-1 overflow-y-auto custom-scrollbar py-4">
-            <div id="ob-step-1" class="w-full bg-glass backdrop-blur-2xl border border-glassBorder p-6 md:p-8 rounded-3xl shadow-2xl text-center">
-                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-beeYellow/20 mb-6 border border-beeYellow/30">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#fbbf24" viewBox="0 0 256 256"><path d="M239.11,104.22a56,56,0,0,0-78.55-16.1,64,64,0,0,0-64.88-.13A56,56,0,0,0,16.89,151.78,56.12,56.12,0,0,0,32,192a55.8,55.8,0,0,0,32.33,14,56.55,56.55,0,0,0,16.48-.48A63.92,63.92,0,0,0,112,224v8a8,8,0,0,0,16,0v-8a63.92,63.92,0,0,0,31.19-18.49,56.55,56.55,0,0,0,16.48.48,56,56,0,0,0,63.44-87.89Z"></path></svg>
+        <main id="onboarding-screen" class="screen flex-col items-center justify-center w-full flex-1">
+            <div class="w-full max-w-xl glass-panel p-8 md:p-12 rounded-[2.5rem] text-center border-t border-white/20">
+                <div class="w-24 h-24 mx-auto bg-bee/10 rounded-full flex items-center justify-center mb-6 border border-bee/20">
+                    <i class="ph-fill ph-student text-5xl text-bee"></i>
                 </div>
-                <h2 class="text-2xl md:text-3xl font-bold mb-4" data-i18n="obTitle">Beeready Hızlı Okuma Kampı</h2>
-                <p class="text-white/70 mb-8 text-sm md:text-base" data-i18n="obDesc">Arı gibi hızlı, odaklı ve verimli. Okuma hızını 3 katına çıkar. Başlamadan önce seni tanıyalım.</p>
-                <div class="flex flex-col gap-4 max-w-xs mx-auto">
-                    <input type="text" id="ob-name" placeholder="Adın" class="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-beeYellow focus:outline-none transition-colors">
-                    <input type="text" id="ob-surname" placeholder="Soyadın" class="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-beeYellow focus:outline-none transition-colors">
-                    <button onclick="sfx.click(); onboarding.next(1)" class="mt-4 w-full py-3 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 font-bold text-white hover:shadow-[0_0_20px_rgba(251,191,36,0.4)] transition-all" data-i18n="btnContinue">Devam Et</button>
+                <h2 class="text-3xl md:text-4xl font-black mb-4">Zihnini Hızlandır</h2>
+                <p class="text-slate-300 mb-8 text-lg leading-relaxed">50 günlük akademik programla okuma hızını, odaklanmayı ve anlama becerini en üst seviyeye taşı.</p>
+                
+                <div class="flex flex-col gap-4">
+                    <div class="relative">
+                        <i class="ph ph-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl"></i>
+                        <input type="text" id="ob-name" placeholder="Adın veya Rumuzun" class="w-full bg-black/40 border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-white focus:border-bee focus:ring-1 focus:ring-bee outline-none transition-all text-lg font-medium">
+                    </div>
+                    <button onclick="onboarding.start()" class="w-full py-4 rounded-2xl btn-primary font-bold text-lg tracking-wide flex items-center justify-center gap-2 mt-2">
+                        <span>Eğitime Başla</span>
+                        <i class="ph-bold ph-arrow-right"></i>
+                    </button>
                 </div>
-            </div>
-
-            <div id="ob-step-2" class="w-full bg-glass backdrop-blur-2xl border border-glassBorder p-6 md:p-8 rounded-3xl shadow-2xl text-center hidden">
-                <i class="ph ph-brain text-5xl text-purple-400 mb-4"></i>
-                <h2 class="text-xl md:text-2xl font-bold mb-4" data-i18n="card1Title">Bilişsel Eğitim: Nöroplastisite</h2>
-                <p class="text-white/70 mb-8 leading-relaxed text-sm md:text-base" data-i18n="card1Desc">Hızlı okuma bir göz değil, beyin egzersizidir. Uygulamamız, kelimeleri seslendirmeden görsel olarak algılamanız için beyninizin yeni sinir ağları (nöroplastisite) oluşturmasını sağlar.</p>
-                <button onclick="sfx.click(); onboarding.next(2)" class="w-full max-w-xs py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 font-bold transition-all" data-i18n="btnUnderstand">Anladım</button>
-            </div>
-
-            <div id="ob-step-3" class="w-full bg-glass backdrop-blur-2xl border border-glassBorder p-6 md:p-8 rounded-3xl shadow-2xl text-center hidden">
-                <i class="ph ph-eye text-5xl text-beeYellow mb-4"></i>
-                <h2 class="text-xl md:text-2xl font-bold mb-4" data-i18n="card2Title">İç Seslendirmeyi Kırmak</h2>
-                <p class="text-white/70 mb-8 leading-relaxed text-sm md:text-base" data-i18n="card2Desc">Okurken kelimeleri zihnimizde seslendirmek bizi konuşma hızımıza (150 WPM) hapseder. 4 Farklı simülasyonumuz (Kelime, Cümle, Paragraf, Sayfa) bu sınırı kırmanızı sağlayacak.</p>
-                <button onclick="sfx.success(); onboarding.finish()" class="w-full max-w-xs py-3 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 font-bold text-white hover:shadow-[0_0_20px_rgba(251,191,36,0.4)] transition-all" data-i18n="btnStartJourney">Eğitime Başla!</button>
+                
+                <div class="mt-8 grid grid-cols-3 gap-4 border-t border-white/5 pt-8">
+                    <div class="text-center"><div class="text-bee font-bold text-xl">50</div><div class="text-xs text-slate-400">Gün Kamp</div></div>
+                    <div class="text-center"><div class="text-bee font-bold text-xl">5</div><div class="text-xs text-slate-400">Aşama/Gün</div></div>
+                    <div class="text-center"><div class="text-bee font-bold text-xl">%75</div><div class="text-xs text-slate-400">Geçme Notu</div></div>
+                </div>
             </div>
         </main>
 
-        <!-- 2. DASHBOARD (10-DAY MAP) -->
-        <main id="dashboard-screen" class="screen flex-col gap-4 md:gap-6 w-full max-w-5xl mx-auto flex-1 overflow-hidden">
-            <div class="bg-glass backdrop-blur-2xl border border-glassBorder p-4 md:p-6 rounded-3xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-4 shrink-0">
-                <div class="text-center md:text-left">
-                    <h2 class="text-xl md:text-2xl font-bold"><span data-i18n="hello">Merhaba</span>, <span id="dash-name" class="text-beeYellow"></span>!</h2>
-                    <p class="text-white/60 text-xs md:text-sm mt-1" data-i18n="dashSub">10 günlük potansiyel açılış programına hoş geldin.</p>
+        <!-- 2. DASHBOARD (50-DAY MAP) -->
+        <main id="dashboard-screen" class="screen flex-col gap-6 w-full flex-1">
+            <div class="glass-panel p-6 md:p-8 rounded-[2rem] flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <h2 class="text-3xl font-black">Hoş Geldin, <span id="dash-name" class="text-bee"></span>!</h2>
+                    <p class="text-slate-400 mt-2 font-medium">Günlük görevlerini tamamla, seviyeni yükselt.</p>
                 </div>
-                <div class="text-center md:text-right w-full md:w-auto">
-                    <div class="text-xs text-white/50 mb-1">XP / <span data-i18n="level">Seviye</span></div>
-                    <div class="flex items-center justify-center md:justify-end gap-3">
-                        <div class="w-32 h-2 bg-black/30 rounded-full overflow-hidden">
-                            <div id="xp-bar" class="h-full bg-gradient-to-r from-yellow-400 to-orange-500 transition-all duration-1000" style="width: 0%"></div>
-                        </div>
-                        <span id="dash-xp" class="font-mono font-bold text-orange-400">0</span>
+                <div class="w-full md:w-64 bg-black/30 p-4 rounded-2xl border border-white/5">
+                    <div class="flex justify-between text-sm mb-2 font-bold">
+                        <span class="text-slate-300">İlerleme</span>
+                        <span id="dash-progress" class="text-bee"></span>
+                    </div>
+                    <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div id="dash-bar" class="h-full bg-bee transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                    <div class="flex justify-between text-xs mt-3 text-slate-400">
+                        <span>Ort. Anlama: <strong id="dash-comp" class="text-white"></strong></span>
+                        <span>Max Hız: <strong id="dash-wpm" class="text-white"></strong></span>
                     </div>
                 </div>
             </div>
 
-            <!-- Road Map -->
-            <div class="bg-glass backdrop-blur-2xl border border-glassBorder p-4 md:p-8 rounded-3xl shadow-xl flex-1 overflow-y-auto custom-scrollbar relative">
-                <div class="absolute top-0 bottom-0 left-6 md:left-1/2 w-1 bg-white/5 transform md:-translate-x-1/2 rounded-full hidden sm:block"></div>
-                <div id="roadmap-container" class="relative space-y-4 md:space-y-8">
-                    <!-- JS will populate the 10 days here -->
+            <!-- Road Map Container -->
+            <div class="glass-panel p-6 md:p-8 rounded-[2rem] flex-1 overflow-y-auto custom-scrollbar relative">
+                <div class="absolute top-8 bottom-8 left-10 md:left-1/2 w-1 bg-white/5 transform md:-translate-x-1/2 rounded-full"></div>
+                <div id="roadmap-container" class="relative space-y-4 pb-8">
+                    <!-- JS Injected Nodes -->
                 </div>
             </div>
         </main>
 
-        <!-- 3. READING SCREEN -->
-        <main id="reading-screen" class="screen flex-col items-center justify-center max-w-5xl mx-auto w-full flex-1">
-            
-            <div class="w-full flex justify-between items-center mb-2 md:mb-4 px-2 md:px-4 shrink-0">
-                <div class="bg-white/10 px-3 py-1 rounded-full text-xs md:text-sm font-mono border border-white/20">
-                    <span data-i18n="mode">Mod</span>: <span id="read-mode-badge" class="text-beeYellow font-bold uppercase"></span>
-                </div>
-                <div class="bg-white/10 px-3 py-1 rounded-full text-xs md:text-sm font-mono border border-white/20">
-                    <span id="read-wpm-display" class="font-bold">300 WPM</span>
-                </div>
-            </div>
-
-            <div id="reader-container" class="relative w-full flex-1 min-h-[250px] max-h-[500px] bg-slate-900/60 backdrop-blur-3xl border border-white/20 rounded-3xl shadow-[0_0_40px_rgba(251,191,36,0.1)] flex items-center justify-center overflow-y-auto custom-scrollbar p-4 md:p-8">
-                <!-- Center Guides for Word mode -->
-                <div id="focus-guides" class="hidden">
-                    <div class="absolute top-0 bottom-0 left-1/2 w-[1px] bg-red-500/20 transform -translate-x-1/2 pointer-events-none"></div>
-                    <div class="absolute top-1/2 left-1/2 w-4 h-4 border-t border-b border-red-500/40 transform -translate-x-1/2 -translate-y-1/2 rounded-sm pointer-events-none"></div>
-                </div>
-
-                <!-- Dynamic Content Display -->
-                <div id="word-display" class="font-mono text-3xl sm:text-5xl md:text-7xl w-full"></div>
-            </div>
-
-            <div class="w-full mt-4 md:mt-6 flex items-center gap-3 px-2 md:px-4 shrink-0">
-                <span id="progress-current" class="text-xs text-white/50 font-mono w-8 md:w-12 text-right">0</span>
-                <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                    <div id="progress-bar" class="h-full bg-gradient-to-r from-yellow-400 to-orange-500 transition-all duration-100 ease-linear" style="width: 0%"></div>
-                </div>
-                <span id="progress-total" class="text-xs text-white/50 font-mono w-8 md:w-12">0</span>
-            </div>
-
-            <div class="mt-6 md:mt-8 flex items-center justify-center gap-4 md:gap-6 bg-glass backdrop-blur-lg px-6 md:px-8 py-3 md:py-4 rounded-full border border-glassBorder shadow-xl shrink-0 mb-4">
-                <input type="range" id="wpm-slider" min="100" max="1000" step="50" value="300" class="w-24 sm:w-32 md:w-48" title="WPM">
+        <!-- 3. LESSON INTRO -->
+        <main id="lesson-screen" class="screen flex-col items-center justify-center w-full flex-1">
+            <div class="w-full max-w-3xl glass-panel p-8 md:p-10 rounded-[2.5rem] relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-8 opacity-10"><i class="ph-fill ph-target text-9xl"></i></div>
                 
-                <button id="btn-play-pause" class="w-14 h-14 md:w-16 md:h-16 flex items-center justify-center rounded-full text-white shadow-[0_0_20px_rgba(225,29,72,0.4)] transition-transform transform hover:scale-105 active:scale-95 bg-rose-600">
-                    <i id="play-icon" class="ph-fill ph-play text-2xl md:text-3xl ml-1 hidden"></i>
-                    <i id="pause-icon" class="ph-fill ph-pause text-2xl md:text-3xl"></i>
-                </button>
+                <div class="inline-block px-4 py-1.5 bg-bee/20 text-bee rounded-full font-bold text-sm tracking-widest uppercase mb-4 border border-bee/20" id="lesson-badge"></div>
+                <h2 class="text-3xl md:text-5xl font-black mb-4" id="lesson-title"></h2>
+                <p class="text-slate-300 text-lg mb-8 leading-relaxed max-w-xl" id="lesson-desc"></p>
+                
+                <div class="bg-black/30 rounded-2xl p-6 border border-white/5 mb-8">
+                    <h3 class="font-bold text-white mb-4 flex items-center gap-2"><i class="ph-fill ph-list-numbers text-bee"></i> Günün Aşamaları</h3>
+                    <ul class="space-y-3 text-sm text-slate-300 font-medium">
+                        <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs">1</div> <span>Göz Kası Pratiği (Takip)</span></li>
+                        <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs">2</div> <span>Kelime Okuma (ORP)</span></li>
+                        <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs">3</div> <span>Cümle Okuma (Bloklama)</span></li>
+                        <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs">4</div> <span>Paragraf Okuma (<span id="lesson-wpm" class="text-bee"></span> WPM)</span></li>
+                        <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs">5</div> <span>Anlama Testi (Min %75)</span></li>
+                    </ul>
+                </div>
 
-                <button onclick="sfx.click(); engine.finishReading(true)" class="px-3 md:px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-xs md:text-sm font-bold border border-white/20 transition-all" data-i18n="btnFinish">Bitir</button>
+                <div class="flex gap-4">
+                    <button onclick="engine.startDay()" class="flex-1 py-4 rounded-2xl btn-primary font-bold text-lg">Güne Başla</button>
+                    <button onclick="app.navigate('dashboard')" class="px-6 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 font-bold transition-all">İptal</button>
+                </div>
             </div>
         </main>
 
-        <!-- 4. QUIZ SCREEN -->
-        <main id="quiz-screen" class="screen flex-col items-center justify-start py-4 w-full max-w-3xl mx-auto flex-1 overflow-y-auto custom-scrollbar">
-            <div class="w-full bg-glass backdrop-blur-2xl border border-glassBorder p-6 md:p-8 rounded-3xl shadow-2xl relative overflow-hidden shrink-0">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-yellow-500/10 rounded-full filter blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+        <!-- 4. TRAINER / READING SCREEN -->
+        <main id="trainer-screen" class="screen flex-col items-center justify-center w-full flex-1">
+            <div class="w-full flex justify-between items-center mb-4 px-2">
+                <div class="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-xl border border-white/10">
+                    <div class="w-2 h-2 rounded-full bg-bee animate-pulse"></div>
+                    <span class="text-sm font-bold tracking-wide" id="trainer-stage-name">Aşama</span>
+                </div>
+                <div class="bg-white/5 px-4 py-2 rounded-xl border border-white/10 font-mono text-bee font-bold text-sm" id="trainer-wpm-box">
+                    <span id="trainer-wpm"></span> WPM
+                </div>
+            </div>
+
+            <!-- Reading Area -->
+            <div class="reading-area relative w-full h-[60vh] min-h-[350px] max-h-[500px] border border-white/10 rounded-[2rem] shadow-2xl flex items-center justify-center overflow-hidden p-6 md:p-12 transition-all">
                 
-                <h2 class="text-2xl md:text-3xl font-bold mb-2 flex items-center gap-3">
-                    <i class="ph ph-brain text-purple-400 text-3xl md:text-4xl"></i> <span data-i18n="quizTitle">Anlama Testi</span>
-                </h2>
+                <!-- Eye Gym Target -->
+                <div id="eye-gym-target"></div>
+
+                <!-- Word Focus Guides -->
+                <div id="focus-guides" class="hidden absolute inset-0 pointer-events-none">
+                    <div class="absolute top-0 bottom-0 left-1/2 w-[1px] bg-red-500/20 transform -translate-x-1/2"></div>
+                    <div class="absolute top-1/2 left-1/2 w-4 h-4 border-t-2 border-b-2 border-red-500/40 transform -translate-x-1/2 -translate-y-1/2 rounded-sm"></div>
+                </div>
+
+                <!-- Text Display -->
+                <div id="text-display" class="w-full text-center"></div>
+            </div>
+
+            <!-- Progress & Controls -->
+            <div class="w-full mt-6 glass-panel p-4 md:p-6 rounded-[2rem] flex flex-col gap-4">
                 
-                <div id="quiz-content" class="space-y-4 md:space-y-6 relative z-10 mt-6"></div>
-                <div id="quiz-result" class="hidden text-center py-6 md:py-8 relative z-10"></div>
+                <div class="flex items-center gap-4 px-2">
+                    <span id="prog-current" class="text-xs font-mono text-slate-400 w-8 text-right">0</span>
+                    <div class="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div id="prog-bar" class="h-full bg-bee transition-all duration-100 ease-linear" style="width: 0%"></div>
+                    </div>
+                    <span id="prog-total" class="text-xs font-mono text-slate-400 w-8">0</span>
+                </div>
+
+                <div class="flex items-center justify-between gap-4">
+                    <div class="flex-1 max-w-[200px]">
+                        <input type="range" id="wpm-slider" min="150" max="800" step="10" class="w-full hidden">
+                    </div>
+                    
+                    <button id="btn-play" onclick="engine.togglePlay()" class="w-16 h-16 rounded-full bg-bee text-navy flex items-center justify-center shadow-glow transform transition-all hover:scale-105 active:scale-95">
+                        <i class="ph-fill ph-play text-3xl ml-1" id="icon-play"></i>
+                        <i class="ph-fill ph-pause text-3xl hidden" id="icon-pause"></i>
+                    </button>
+                    
+                    <div class="flex-1 flex justify-end">
+                        <button id="btn-next-stage" onclick="engine.nextStage()" class="hidden px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 font-bold transition-all border border-white/10 text-sm">
+                            Sonraki <i class="ph-bold ph-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 5. QUIZ SCREEN -->
+        <main id="quiz-screen" class="screen flex-col items-center justify-start w-full flex-1 pt-4 overflow-y-auto custom-scrollbar">
+            <div class="w-full max-w-3xl glass-panel p-6 md:p-10 rounded-[2.5rem] relative shrink-0">
+                <div class="flex items-center justify-between mb-8 pb-6 border-b border-white/10">
+                    <h2 class="text-3xl font-black flex items-center gap-3"><i class="ph-fill ph-brain text-bee"></i> Anlama Testi</h2>
+                    <div class="text-sm font-bold bg-white/5 px-3 py-1 rounded-lg border border-white/10 text-slate-300">Aşama 5/5</div>
+                </div>
+                
+                <div id="quiz-container" class="space-y-8">
+                    <!-- Questions injected here -->
+                </div>
+
+                <button id="btn-submit-quiz" onclick="quiz.submit()" disabled class="w-full mt-10 py-5 rounded-2xl btn-primary font-bold text-xl">Testi Tamamla ve Puanla</button>
+            </div>
+        </main>
+
+        <!-- 6. RESULT SCREEN -->
+        <main id="result-screen" class="screen flex-col items-center justify-center w-full flex-1">
+            <div class="w-full max-w-xl glass-panel p-8 md:p-12 rounded-[2.5rem] text-center relative overflow-hidden">
+                <div id="result-bg-glow" class="absolute inset-0 bg-bee/5 filter blur-3xl rounded-full"></div>
+                
+                <h2 class="text-3xl font-black mb-8 relative z-10" id="result-title">Gün Özeti</h2>
+                
+                <div class="relative w-48 h-48 mx-auto mb-8 z-10 flex items-center justify-center">
+                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"></circle>
+                        <circle id="result-circle" cx="50" cy="50" r="45" fill="none" stroke="#fbbf24" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="283" class="transition-all duration-1500 ease-out stroke-current"></circle>
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                        <span id="result-score" class="text-5xl font-black">0%</span>
+                        <span class="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">Skor</span>
+                    </div>
+                </div>
+
+                <p id="result-msg" class="text-lg text-slate-300 mb-8 font-medium relative z-10"></p>
+
+                <div class="grid grid-cols-2 gap-4 mb-8 relative z-10">
+                    <div class="bg-black/40 p-4 rounded-2xl border border-white/5">
+                        <div class="text-sm text-slate-400 mb-1">Ortalama Hız</div>
+                        <div class="text-2xl font-bold text-white"><span id="result-wpm">0</span> <span class="text-xs text-bee font-mono">WPM</span></div>
+                    </div>
+                    <div class="bg-black/40 p-4 rounded-2xl border border-white/5">
+                        <div class="text-sm text-slate-400 mb-1">Kazanılan XP</div>
+                        <div class="text-2xl font-bold text-white"><span id="result-xp">+0</span> <span class="text-xs text-bee font-mono">XP</span></div>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 relative z-10">
+                    <button onclick="app.navigate('dashboard')" class="flex-1 py-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 font-bold transition-all">Haritaya Dön</button>
+                    <button id="btn-result-action" class="flex-1 py-4 rounded-2xl btn-primary font-bold"></button>
+                </div>
             </div>
         </main>
 
     </div>
 
+    <!-- MAIN JAVASCRIPT LOGIC -->
     <script>
-        // --- SOUND EFFECTS & HAPTICS ---
-        const sfx = {
-            ctx: null,
-            init() {
-                if (!this.ctx) {
-                    const AudioContext = window.AudioContext || window.webkitAudioContext;
-                    this.ctx = new AudioContext();
-                }
+        // --- DATA & CONTENT (Passages & Questions) ---
+        const textPool = [
+            {
+                type: 'Basic', topic: 'Odaklanma ve Zihin',
+                text: "Dikkat, modern çağın en değerli para birimidir. Sürekli uyarıcılarla çevrili olduğumuz bu dünyada, derin odaklanma yeteneği nadir ve güçlü bir beceri haline gelmiştir. Okuma, beynin bu odak kasını en iyi çalıştıran antrenmanlardan biridir. Gözlerimiz satırlar üzerinde kayarken, zihnimiz dış dünyadan soyutlanır ve yazarın düşünce evrenine girer. Ancak hızlı okumak, sadece gözleri hızlı hareket ettirmek değildir; aynı zamanda görsel algıyı ve kavramsal eşleştirmeyi hızlandırmaktır. Kelimeleri tek tek seslendirmek yerine, onları resimler gibi bütünsel algılamaya başladığımızda gerçek okuma hızı ortaya çıkar. Bu süreç nöroplastisite sayesinde pratikle gelişir.",
+                questions: [
+                    { type: 'Ana Fikir', q: "Metnin ana fikri nedir?", opts: ["Modern dünyada odaklanma zorlaşmıştır", "Hızlı okuma görsel algıyı hızlandırmakla mümkündür", "Kitap okumak eğlencelidir", "Göz egzersizleri gözü yorar"], ans: 1 },
+                    { type: 'Detay', q: "Metne göre gerçek okuma hızı nasıl ortaya çıkar?", opts: ["Kelimeleri yüksek sesle okuyarak", "Sadece başlıkları okuyarak", "Kelimeleri bütünsel resimler gibi algılayarak", "Gözleri kapatarak"], ans: 2 },
+                    { type: 'Çıkarım', q: "Bu metinden hareketle aşağıdakilerden hangisi söylenemez?", opts: ["Derin odaklanma geliştirilebilir bir beceridir", "İç seslendirme okuma hızını artırır", "Okuma beyin için bir antrenmandır", "Modern çağda dikkat değerlidir"], ans: 1 },
+                    { type: 'Kelime', q: "Metindeki 'nöroplastisite' kavramı bağlama göre neyi ifade eder?", opts: ["Beynin pratikle değişip gelişebilme yeteneğini", "Göz kaslarının esnekliğini", "Kelimelerin kökenini", "Kitapların kağıt kalitesini"], ans: 0 },
+                    { type: 'Amaç', q: "Yazarın bu metni yazma amacı nedir?", opts: ["Hızlı okumanın mekanizmasını ve odaklanmanın önemini açıklamak", "Göz hastalıkları hakkında bilgi vermek", "Teknolojinin zararlarını anlatmak", "Roman okumayı teşvik etmek"], ans: 0 }
+                ]
             },
-            playTone(freq, type, duration, vol) {
-                if (!this.ctx) this.init();
-                if(this.ctx.state === 'suspended') this.ctx.resume();
-                
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                
-                osc.type = type;
-                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-                
-                gain.gain.setValueAtTime(vol, this.ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
-                
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                
-                osc.start();
-                osc.stop(this.ctx.currentTime + duration);
+            {
+                type: 'ALES', topic: 'Felsefe ve Bilim',
+                text: "Bilimsel devrimler, eski paradigmaların yıkılıp yenilerinin inşa edildiği kriz dönemleridir. Thomas Kuhn'a göre bilim, sürekli ve doğrusal bir birikimle ilerlemez; aksine sıçramalarla gelişir. Bir teori, karşılaştığı anormallikleri açıklayamadığında kriz başlar. Bu kriz, ancak olayları açıklayabilen yeni bir teorinin, yani yeni bir paradigmanın kabul edilmesiyle çözülür. Örneğin, Batlamyus'un yer merkezli evren modelinden Kopernik'in güneş merkezli modeline geçiş böyle bir sıçramadır. Ancak yeni bir paradigmanın kabulü sadece bilimsel kanıtlara değil, aynı zamanda bilim camiasının sosyolojik ve psikolojik dinamiklerine de bağlıdır. Bilim insanları eski alışkanlıklarından kolay vazgeçmezler.",
+                questions: [
+                    { type: 'Ana Fikir', q: "Kuhn'a göre bilimsel ilerlemenin doğası nasıldır?", opts: ["Sürekli ve doğrusal bir birikimdir", "Sadece rastlantılara bağlıdır", "Krizler ve paradigma sıçramalarıyla gerçekleşir", "Sosyolojiden tamamen bağımsızdır"], ans: 2 },
+                    { type: 'Detay', q: "Bilimsel bir teori ne zaman krize girer?", opts: ["Çok fazla destekçisi olduğunda", "Anormallikleri açıklayamadığında", "Yeni bir kitap yayınlandığında", "Kanıtlar çok güçlü olduğunda"], ans: 1 },
+                    { type: 'Çıkarım', q: "Metne göre paradigma değişimi için hangisi gereklidir?", opts: ["Sadece matematiksel ispatlar", "Eski teorinin geliştirilmesi", "Hem kanıtlar hem de sosyolojik kabul", "Bilim insanlarının yaşlanması"], ans: 2 },
+                    { type: 'Başlık', q: "Bu paragrafa en uygun başlık hangisi olabilir?", opts: ["Batlamyus'un Hataları", "Bilimsel Devrimlerin Yapısı", "Güneş Merkezli Evren", "Psikolojinin Bilime Etkisi"], ans: 1 },
+                    { type: 'Kelime', q: "Metindeki 'paradigma' kelimesi yerine hangisi getirilebilir?", opts: ["Varsayım", "Algısal Çerçeve/Model", "Deney", "Formül"], ans: 1 }
+                ]
             },
-            click() { 
-                this.playTone(600, 'sine', 0.1, 0.1); 
-                this.vibrate(10); 
+            {
+                type: 'YDS', topic: 'Technology & Society',
+                text: "The integration of artificial intelligence into healthcare has the potential to revolutionize patient outcomes. Machine learning algorithms can analyze vast amounts of medical data much faster than human practitioners, identifying patterns that might go unnoticed. For instance, AI-driven diagnostic tools have shown remarkable accuracy in detecting early signs of diseases like cancer from radiological images. However, the adoption of such technologies is not without challenges. Issues concerning data privacy, the potential for algorithmic bias, and the ethical implications of machine-led decision-making continue to spark intense debate among medical professionals and policymakers.",
+                questions: [
+                    { type: 'Main Idea', q: "What is the main focus of the passage?", opts: ["The history of medical imaging", "The benefits and challenges of AI in healthcare", "How to write machine learning algorithms", "The cost of healthcare policies"], ans: 1 },
+                    { type: 'Detail', q: "According to the passage, what is one advantage of machine learning algorithms?", opts: ["They are cheaper than doctors", "They can analyze medical data faster than humans", "They never make mistakes", "They do not need data to operate"], ans: 1 },
+                    { type: 'Inference', q: "It can be inferred from the passage that...", opts: ["AI will completely replace human doctors soon", "Medical professionals fully agree on using AI", "There are still unresolved concerns regarding AI use in medicine", "Algorithmic bias only affects cancer diagnosis"], ans: 2 },
+                    { type: 'Vocabulary', q: "The word 'revolutionize' in the text is closest in meaning to:", opts: ["Destroy completely", "Maintain the status quo", "Change fundamentally", "Increase slowly"], ans: 2 },
+                    { type: 'Purpose', q: "Why does the author mention 'detecting early signs of diseases like cancer'?", opts: ["To give an example of AI's beneficial capabilities", "To scare patients about cancer", "To criticize radiological images", "To prove that doctors are incompetent"], ans: 0 }
+                ]
             },
-            tick() { 
-                this.playTone(800, 'triangle', 0.05, 0.02); 
-            },
-            success() { 
-                this.playTone(440, 'sine', 0.1, 0.1);
-                setTimeout(() => this.playTone(554, 'sine', 0.1, 0.1), 100);
-                setTimeout(() => this.playTone(659, 'sine', 0.3, 0.1), 200);
-                this.vibrate([30, 50, 30]);
-            },
-            error() { 
-                this.playTone(300, 'square', 0.2, 0.1);
-                setTimeout(() => this.playTone(250, 'square', 0.3, 0.1), 150);
-                this.vibrate([50, 50, 50]);
-            },
-            vibrate(pattern) {
-                if(navigator.vibrate) {
-                    try { navigator.vibrate(pattern); } catch(e){}
-                }
-            }
-        };
-
-        // Initialize audio context on first interaction to comply with browser policies
-        document.body.addEventListener('click', () => sfx.init(), {once:true});
-        document.body.addEventListener('touchstart', () => sfx.init(), {once:true});
-
-        // --- MULTILANGUAGE DICTIONARY ---
-        const i18nDict = {
-            tr: {
-                obTitle: "Beeready Hızlı Okuma", obDesc: "Arı gibi hızlı, odaklı ve verimli. Okuma hızını 3 katına çıkar. Başlamadan önce seni tanıyalım.", btnContinue: "Devam Et",
-                card1Title: "Bilişsel Eğitim: Nöroplastisite", card1Desc: "Hızlı okuma bir göz değil, beyin egzersizidir. Nöroplastisite sayesinde kelimeleri fotoğrafik olarak algılamayı öğreneceksin.", btnUnderstand: "Anladım",
-                card2Title: "İç Seslendirmeyi Kırmak", card2Desc: "Kelimeleri zihnimizde seslendirmek hızımızı kısıtlar. Farklı simülasyonlarımızla iç sesi susturmayı başaracağız.", btnStartJourney: "Eğitime Başla!",
-                hello: "Merhaba", dashSub: "10 günlük potansiyel açılış programına hoş geldin.", level: "Seviye", mode: "Mod", btnFinish: "Bitir",
-                quizTitle: "Anlama Testi", btnCompleteQuiz: "Testi Tamamla", perfect: "Harika, Arı Gibi Hızlısın! 🐝", tryAgain: "Biraz Daha Odaklan, Tekrar Dene!", backToDash: "Kovana Dön",
-                day: "Gün", locked: "Kilitli", unlockDay: "Sonraki Gün Açıldı!", wordMode: "Tek Kelime", sentenceMode: "Cümle", paraMode: "Paragraf", pageMode: "Sayfa"
-            },
-            en: {
-                obTitle: "Beeready Speed Reading", obDesc: "Fast, focused and efficient like a bee. Triple your reading speed. Let's get to know you.", btnContinue: "Continue",
-                card1Title: "Cognitive Training: Neuroplasticity", card1Desc: "Speed reading is a brain exercise. Through neuroplasticity, you will learn to process words photographically.", btnUnderstand: "I Understand",
-                card2Title: "Breaking Subvocalization", card2Desc: "Saying words in our mind limits our speed. Our various simulations will help silence that inner voice.", btnStartJourney: "Start Journey!",
-                hello: "Hello", dashSub: "Welcome to the 10-day potential unlock program.", level: "Level", mode: "Mode", btnFinish: "Finish",
-                quizTitle: "Comprehension Test", btnCompleteQuiz: "Submit Quiz", perfect: "Awesome, Fast as a Bee! 🐝", tryAgain: "Focus More, Try Again!", backToDash: "Back to Hive",
-                day: "Day", locked: "Locked", unlockDay: "Next Day Unlocked!", wordMode: "Word", sentenceMode: "Sentence", paraMode: "Paragraph", pageMode: "Page"
-            }
-        };
-
-        // --- CURRICULUM & TEXTS (10 Days) ---
-        const CURRICULUM = [
-            { day: 1, mode: 'word', wpmDefault: 300,
-              tr: { title: "Giriş: Odaklanma", content: "Beynimiz bir bilgisayar gibi çalışır. Verileri işler ve saklar. İlk günümüzde, sadece gözlerimizi merkezde tutmaya odaklanıyoruz. Kelimeler aktıkça zihniniz onlara yetişecektir.", questions: [{ q: "İlk günün odak noktası nedir?", options: ["Hızlı geçmek", "Gözleri merkezde tutmak", "Kelime saymak"], answer: 1 }] },
-              en: { title: "Intro: Focusing", content: "Our brain works like a computer. It processes and stores data. On our first day, we focus solely on keeping our eyes centered. As words flow, your mind will catch up.", questions: [{ q: "What is the focus of the first day?", options: ["Skipping fast", "Keeping eyes centered", "Counting words"], answer: 1 }] }
-            },
-            { day: 2, mode: 'word', wpmDefault: 400,
-              tr: { title: "Hızlanma", content: "Şimdi hızı biraz artırıyoruz. İç sesiniz kelimelere yetişemediğinde panik yapmayın. Gözleriniz ve beyniniz hala anlamı kavramaya devam eder.", questions: [{ q: "İç ses yetişemediğinde ne yapılmalıdır?", options: ["Panik yapılmamalıdır", "Okuma durdurulmalıdır", "Geri dönülmelidir"], answer: 0 }] },
-              en: { title: "Speeding Up", content: "Now we increase the speed slightly. Do not panic if your inner voice cannot keep up with the words. Your eyes and brain still grasp the meaning.", questions: [{ q: "What to do when inner voice lags?", options: ["Do not panic", "Stop reading", "Go back"], answer: 0 }] }
-            },
-            { day: 3, mode: 'sentence', wpmDefault: 200,
-              tr: { title: "Blok Okuma", content: "Artık kelimeleri tek tek değil, cümle blokları halinde göreceğiz. Bu göz kaslarınızı yanlara doğru açmanızı sağlar. Çevresel görüşünüz geliştikçe hızınız artacaktır.", questions: [{ q: "Blok okuma neyi geliştirir?", options: ["Ses tellerini", "Çevresel görüşü", "Renk algısını"], answer: 1 }] },
-              en: { title: "Block Reading", content: "Now we will see words in sentence blocks, not individually. This makes your eye muscles stretch sideways. As peripheral vision improves, speed increases.", questions: [{ q: "What does block reading improve?", options: ["Vocal cords", "Peripheral vision", "Color perception"], answer: 1 }] }
-            },
-            { day: 4, mode: 'sentence', wpmDefault: 300,
-              tr: { title: "Cümle Akışı", content: "Gözlerimiz bir metnin üzerinde kayarken, aslında kısa duraksamalar yapar. Bu duraksamalara fiksasyon denir. Amacımız fiksasyon süresini kısaltmaktır. Sadece cümlenin merkezine bakarak tüm kelimeleri görmeye çalışın.", questions: [{ q: "Gözün okurken yaptığı kısa duraksamalara ne ad verilir?", options: ["Fiksasyon", "Simülasyon", "İllüzyon"], answer: 0 }] },
-              en: { title: "Sentence Flow", content: "When our eyes glide over text, they actually make brief stops. These stops are called fixations. Our goal is to shorten fixation time. Try to see all words by looking at the sentence center.", questions: [{ q: "What are the brief eye stops during reading called?", options: ["Fixation", "Simulation", "Illusion"], answer: 0 }] }
-            },
-            { day: 5, mode: 'paragraph', wpmDefault: 250,
-              tr: { title: "Paragraf Taraması", content: "Hızlı okumanın sırlarından biri de gereksiz bağlaçları atlayıp anahtar kelimelere odaklanmaktır.\n\nEkranda beliren paragrafların sadece başlarına ve sonlarına dikkat ederek ana fikri yakalamayı deneyin. Beyniniz boşlukları kendisi dolduracaktır.", questions: [{ q: "Paragraf taramasında nereye odaklanılmalıdır?", options: ["Gereksiz bağlaçlara", "Anahtar kelimelere", "Sadece noktalara"], answer: 1 }] },
-              en: { title: "Paragraph Scanning", content: "A secret of speed reading is skipping unnecessary conjunctions and focusing on keywords.\n\nTry catching the main idea by paying attention only to the beginnings and ends of paragraphs appearing. Your brain will fill the gaps.", questions: [{ q: "Where to focus in paragraph scanning?", options: ["Unnecessary conjunctions", "Keywords", "Only on periods"], answer: 1 }] }
-            },
-            { day: 6, mode: 'paragraph', wpmDefault: 350,
-              tr: { title: "Görsel Kavrama", content: "Okumak, kelimeleri duymak değil, resimleri görmektir.\n\nElma kelimesini okuduğunuzda harfleri değil, direkt kırmızı bir elmayı hayal edersiniz. Bu görsel kavrama yeteneğini tüm metne yayacağız.", questions: [{ q: "Metne göre okumak aslında nedir?", options: ["Kelimeleri duymaktır", "Resimleri görmektir", "Harfleri ezberlemektir"], answer: 1 }] },
-              en: { title: "Visual Comprehension", content: "Reading is not hearing words, but seeing pictures.\n\nWhen you read 'Apple', you don't think letters, you directly imagine a red apple. We will spread this visual comprehension to the entire text.", questions: [{ q: "According to text, what is reading really?", options: ["Hearing words", "Seeing pictures", "Memorizing letters"], answer: 1 }] }
-            },
-            { day: 7, mode: 'paragraph', wpmDefault: 450,
-              tr: { title: "Derin Odak", content: "Dikkat dağıtıcı unsurlar okuma hızımızı en çok düşüren şeylerdir.\n\nBu egzersizde paragraflar daha hızlı akacak. Sadece ekrana ve anlatılan hikayeye odaklanın. Dikkatinizin dağıldığını hissettiğiniz an derin bir nefes alın ve tekrar ekrana dönün.", questions: [{ q: "Dikkat dağıldığında ne tavsiye ediliyor?", options: ["Okumayı bırakmak", "Derin nefes almak", "Müzik açmak"], answer: 1 }] },
-              en: { title: "Deep Focus", content: "Distractions are the main things dropping our reading speed.\n\nIn this exercise, paragraphs will flow faster. Just focus on the screen and the story. Take a deep breath when distracted and return.", questions: [{ q: "What is advised when distracted?", options: ["Stop reading", "Take a deep breath", "Turn on music"], answer: 1 }] }
-            },
-            { day: 8, mode: 'page', wpmDefault: 300,
-              tr: { title: "Sayfa Okuması", content: "Artık tüm yetenekleri birleştirme vakti. Karşınıza tam bir sayfa metin gelecek. Gözlerinizi 'Z' veya 'S' çizer gibi sayfa üzerinde kaydırın.\n\nTek tek kelimelere takılmak yasak. Metni tarayın ve ana konuyu bulun. Süreniz başlıyor.", questions: [{ q: "Sayfa üzerinde gözler nasıl kaydırılmalıdır?", options: ["Aşağıdan yukarıya", "Z veya S çizer gibi", "Sadece sağ taraftan"], answer: 1 }] },
-              en: { title: "Page Reading", content: "Time to combine all skills. A full page text will appear. Glide your eyes over the page drawing 'Z' or 'S' shapes.\n\nFixating on individual words is forbidden. Scan the text and find the main topic. Time starts.", questions: [{ q: "How should eyes glide over the page?", options: ["Bottom to top", "Drawing Z or S", "Only on the right side"], answer: 1 }] }
-            },
-            { day: 9, mode: 'page', wpmDefault: 400,
-              tr: { title: "İleri Tarama", content: "Bilgi çağında her şeyi kelimesi kelimesine okuyamayız. Akademik makaleler, uzun e-postalar veya raporlar hızlıca taranmalıdır.\n\nİlk cümleyi okuyun, ortayı tarayın, son cümleyi okuyun. Bu yöntemle gereksiz detaylardan kurtulursunuz. Hazırsanız metni taramaya başlayın.", questions: [{ q: "Uzun metinlerde hangi yöntem tavsiye ediliyor?", options: ["Her kelimeyi okumak", "İlk ve son cümleyi okuyup ortayı taramak", "Sadece başlığı okumak"], answer: 1 }] },
-              en: { title: "Advanced Scanning", content: "In info age, we can't read word by word. Articles, emails, reports must be scanned.\n\nRead the first sentence, scan the middle, read the last. This frees you from fluff. Start scanning if ready.", questions: [{ q: "What method is advised for long texts?", options: ["Read every word", "Read first/last, scan middle", "Read only the title"], answer: 1 }] }
-            },
-            { day: 10, mode: 'page', wpmDefault: 500,
-              tr: { title: "Mezuniyet: Arı Kovanı", content: "Tebrikler, 10. güne ulaştınız! Beyninizin okuma algısı tamamen değişti. Artık iç sesiniz çok daha sessiz, çevresel görüşünüz çok daha geniş.\n\nBu son test, tüm öğrendiklerinizi sınayacak. Zihninizi serbest bırakın ve bilginin doğrudan beyninize akmasına izin verin. Başarılar!", questions: [{ q: "10 günlük eğitimin sonunda hangisi gerçekleşmiştir?", options: ["İç ses hızlanmıştır", "Çevresel görüş genişlemiştir", "Gözler bozulmuştur"], answer: 1 }] },
-              en: { title: "Graduation: The Hive", content: "Congrats, you reached day 10! Your reading perception changed completely. Inner voice is quieter, peripheral vision is wider.\n\nThis final test challenges all you learned. Free your mind and let info flow directly into your brain. Good luck!", questions: [{ q: "What happens at the end of the 10-day training?", options: ["Inner voice sped up", "Peripheral vision widened", "Eyes deteriorated"], answer: 1 }] }
+            {
+                type: 'LGS', topic: 'Yeni Nesil Paragraf',
+                text: "Ormanlar, dünyanın akciğerleri olmanın ötesinde muazzam bir iletişim ağına sahiptir. Bilim insanları, ağaçların kökleri aracılığıyla birbirleriyle iletişim kurduklarını keşfetmiştir. 'Mikoriza' adı verilen mantar ağları sayesinde, büyük ve sağlıklı ağaçlar, gölgede kalmış fidanlara besin aktarabilir. Hatta bir ağaç zararlı böceklerin saldırısına uğradığında, bu ağ üzerinden kimyasal sinyaller göndererek diğer ağaçları uyarır. Uyarilan ağaçlar, yapraklarındaki toksik madde miktarını artırarak kendilerini savunmaya hazırlarlar. Bu durum, doğanın rekabetten ziyade, dayanışma ve iş birliği üzerine kurulu karmaşık bir sistem olduğunu bizlere göstermektedir.",
+                questions: [
+                    { type: 'Ana Fikir', q: "Metinde asıl anlatılmak istenen nedir?", opts: ["Ormanlar dünyanın oksijen kaynağıdır", "Mantarlar ağaçlara zarar verir", "Doğa, rekabetten çok dayanışma ve iletişim üzerine kurulu bir sistemdir", "Böcekler orman ekosistemi için faydalıdır"], ans: 2 },
+                    { type: 'Detay', q: "Ağaçlar zararlı böcek saldırısını diğerlerine nasıl haber verir?", opts: ["Kuşlar aracılığıyla", "Yapraklarını dökerek", "Köklerindeki mantar ağı üzerinden kimyasal sinyallerle", "Rüzgarın yönünü değiştirerek"], ans: 2 },
+                    { type: 'Çıkarım', q: "Mikoriza ağları için hangisi söylenemez?", opts: ["Ağaçlar arası besin transferini sağlar", "Doğal bir tehlike uyarı sistemidir", "Sadece aynı tür ağaçlar arasında bulunur", "Ormanın sağlığını destekler"], ans: 2 },
+                    { type: 'Kelime', q: "Metindeki 'toksik' kelimesinin anlamdaşı nedir?", opts: ["Besleyici", "Zehirli", "Tatlı", "Şifalı"], ans: 1 },
+                    { type: 'Amaç', q: "Yazar bu metni hangi amaçla yazmıştır?", opts: ["Ağaçların bilinmeyen iletişim ve yardımlaşma ağını tanıtmak", "Mantarların nasıl tüketileceğini anlatmak", "Çevre kirliliğine dikkat çekmek", "Böcek ilaçlamasını teşvik etmek"], ans: 0 }
+                ]
             }
         ];
 
-        // --- STATE ---
+        // --- ALGORITHM: Generate 50 Days ---
+        function generateCurriculum() {
+            let curriculum = [];
+            let wpmBase = 200;
+            
+            for (let i = 1; i <= 50; i++) {
+                // Determine Day Type
+                let tType = 'Basic';
+                if (i >= 15 && i % 4 === 0) tType = 'ALES';
+                else if (i >= 20 && i % 5 === 0) tType = 'YDS';
+                else if (i >= 10 && i % 3 === 0) tType = 'LGS';
+
+                const pool = textPool.find(t => t.type === tType) || textPool[0];
+                
+                // Gradual WPM increase
+                const dayWpm = Math.min(wpmBase + (i * 8), 700);
+
+                curriculum.push({
+                    day: i,
+                    type: tType,
+                    topic: pool.topic,
+                    wpm: dayWpm,
+                    text: pool.text,
+                    questions: pool.questions
+                });
+            }
+            return curriculum;
+        }
+        const CURRICULUM = generateCurriculum();
+
+        // --- STATE MANAGEMENT ---
+        const STORAGE_KEY = 'beeready_app_v3';
+        
         const appState = {
-            lang: localStorage.getItem('nx_lang') || 'tr',
-            user: JSON.parse(localStorage.getItem('nx_user')) || null,
-            mode: '', 
-            currentDayData: null,
-            engine: { chunks: [], currentIndex: 0, isPlaying: false, wpm: 300, timerId: null }
+            user: null, // { name, day, xp, level, stats: { compSum, compCount, bestWpm } }
+            currentScreen: '',
         };
 
-        const setLangUI = () => {
-            document.getElementById('lang-btn').innerText = appState.lang === 'tr' ? 'EN' : 'TR';
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (i18nDict[appState.lang][key]) el.innerHTML = i18nDict[appState.lang][key];
-            });
-            if(appState.mode === 'dashboard') dashboard.renderMap();
+        const sessionState = {
+            dayObj: null,
+            stageIndex: 0, // 0: Eye, 1: Word, 2: Sentence, 3: Paragraph, 4: Quiz
+            isPlaying: false,
+            timer: null,
+            animFrame: null,
+            
+            // Reading engine specifics
+            chunks: [],
+            chunkIdx: 0,
+            wpm: 200,
+            
+            // Stats for the day
+            quizAnswers: {},
         };
 
-        // --- CORE APP CONTROLLER ---
+        // --- CORE LOGIC ---
         const app = {
             init() {
-                setLangUI();
-                if (!appState.user) {
-                    this.navigate('onboarding');
-                } else {
-                    document.getElementById('user-mini-profile').classList.remove('hidden');
-                    document.getElementById('user-mini-profile').classList.add('flex');
-                    document.getElementById('header-level').innerText = `Lvl ${appState.user.level}`;
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    appState.user = JSON.parse(saved);
+                    this.updateHeader();
                     this.navigate('dashboard');
+                } else {
+                    this.navigate('onboarding');
                 }
             },
-            toggleLang() {
-                appState.lang = appState.lang === 'tr' ? 'en' : 'tr';
-                localStorage.setItem('nx_lang', appState.lang);
-                setLangUI();
+            
+            save() {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appState.user));
+                this.updateHeader();
             },
-            navigate(targetMode) {
-                appState.mode = targetMode;
+            
+            navigate(screenId) {
+                appState.currentScreen = screenId;
+                
+                // Hide all
                 document.querySelectorAll('.screen').forEach(s => {
                     s.classList.remove('active');
-                    setTimeout(() => s.style.display = 'none', 300);
+                    setTimeout(() => { if(!s.classList.contains('active')) s.style.display = 'none'; }, 300);
                 });
                 
+                // Show target
                 setTimeout(() => {
-                    const targetEl = document.getElementById(`${targetMode}-screen`);
-                    targetEl.style.display = 'flex';
-                    void targetEl.offsetWidth; 
-                    targetEl.classList.add('active');
-                    
-                    if(targetMode === 'dashboard') dashboard.init();
+                    const el = document.getElementById(screenId + '-screen');
+                    if (el) {
+                        el.style.display = 'flex';
+                        // Force reflow
+                        void el.offsetWidth;
+                        el.classList.add('active');
+                        
+                        // Screen specific actions
+                        if(screenId === 'dashboard') dashboard.render();
+                    }
                 }, 300);
             },
-            saveUser() {
-                localStorage.setItem('nx_user', JSON.stringify(appState.user));
-                document.getElementById('user-mini-profile').classList.remove('hidden');
-                document.getElementById('user-mini-profile').classList.add('flex');
-                document.getElementById('header-level').innerText = `Lvl ${appState.user.level}`;
+            
+            updateHeader() {
+                const u = appState.user;
+                if (!u) return;
+                document.getElementById('header-profile').classList.remove('hidden');
+                document.getElementById('header-profile').classList.add('flex');
+                document.getElementById('header-name').innerText = u.name;
+                document.getElementById('header-xp').innerText = u.xp + ' XP';
+                document.getElementById('header-level').innerText = 'Lvl ' + u.level;
             }
         };
 
         // --- ONBOARDING ---
         const onboarding = {
-            next(step) {
-                if (step === 1) {
-                    const n = document.getElementById('ob-name').value.trim();
-                    const s = document.getElementById('ob-surname').value.trim();
-                    if(!n) { sfx.error(); return; }
-                    appState.user = { name: n, surname: s, day: 1, xp: 0, level: 1 };
-                    document.getElementById('ob-step-1').classList.add('hidden');
-                    document.getElementById('ob-step-2').classList.remove('hidden');
-                } else if (step === 2) {
-                    document.getElementById('ob-step-2').classList.add('hidden');
-                    document.getElementById('ob-step-3').classList.remove('hidden');
-                }
-            },
-            finish() {
-                app.saveUser();
+            start() {
+                const name = document.getElementById('ob-name').value.trim();
+                if (!name) return; // Could add validation animation
+                
+                appState.user = {
+                    name: name,
+                    day: 1,
+                    xp: 0,
+                    level: 1,
+                    stats: { compSum: 0, compCount: 0, bestWpm: 0 }
+                };
+                app.save();
                 app.navigate('dashboard');
             }
         };
 
-        // --- DASHBOARD (10-Day Map) ---
+        // --- DASHBOARD ---
         const dashboard = {
-            init() {
-                document.getElementById('dash-name').innerText = appState.user.name;
-                document.getElementById('dash-xp').innerText = `${appState.user.xp} XP`;
-                const progress = Math.min((appState.user.xp % 1000) / 10, 100);
-                document.getElementById('xp-bar').style.width = `${progress}%`;
-                this.renderMap();
-            },
-            renderMap() {
-                const container = document.getElementById('roadmap-container');
-                let html = '';
+            render() {
+                const u = appState.user;
+                document.getElementById('dash-name').innerText = u.name;
                 
-                CURRICULUM.forEach((c) => {
-                    const isUnlocked = c.day <= appState.user.day;
-                    const isCompleted = c.day < appState.user.day;
-                    const isActive = c.day === appState.user.day;
-                    
-                    const t = i18nDict[appState.lang];
-                    const data = c[appState.lang];
-                    const modeText = t[c.mode + 'Mode'] || c.mode;
-                    
-                    let classes = "day-node p-3 sm:p-4 md:p-6 rounded-2xl border-2 bg-glass backdrop-blur-md flex items-center gap-3 md:gap-4 transition-all ";
-                    if(!isUnlocked) classes += "locked border-white/10";
-                    else if(isCompleted) classes += "completed border-purple-500/50 cursor-pointer hover:bg-purple-500/30";
-                    else if(isActive) classes += "active-node cursor-pointer hover:shadow-beeYellow/50 hover:bg-white/10";
+                // Calculate progress
+                const progressPct = ((u.day - 1) / 50) * 100;
+                document.getElementById('dash-progress').innerText = `%${Math.round(progressPct)}`;
+                document.getElementById('dash-bar').style.width = `${progressPct}%`;
+                
+                // Stats
+                const avgComp = u.stats.compCount > 0 ? Math.round(u.stats.compSum / u.stats.compCount) : 0;
+                document.getElementById('dash-comp').innerText = `%${avgComp}`;
+                document.getElementById('dash-wpm').innerText = u.stats.bestWpm;
 
-                    let icon = "ph-lock";
-                    if(isCompleted) icon = "ph-check-circle text-purple-400";
-                    else if(isActive) icon = "ph-play-circle text-beeYellow animate-pulse";
+                // Render Roadmap
+                const container = document.getElementById('roadmap-container');
+                container.innerHTML = '';
+                
+                CURRICULUM.forEach(dayData => {
+                    const isCompleted = dayData.day < u.day;
+                    const isActive = dayData.day === u.day;
+                    const isLocked = dayData.day > u.day;
+                    
+                    let classes = "day-node relative w-full md:w-[85%] p-4 md:p-5 rounded-2xl border-2 glass-panel flex items-center gap-4 z-10 ";
+                    classes += (dayData.day % 2 === 0) ? "md:ml-auto " : "md:mr-auto ";
+                    
+                    let iconHtml = "";
+                    if (isLocked) {
+                        classes += "locked border-white/5";
+                        iconHtml = `<i class="ph-fill ph-lock-key text-2xl text-slate-500"></i>`;
+                    } else if (isCompleted) {
+                        classes += "completed cursor-pointer hover:bg-green-500/10";
+                        iconHtml = `<i class="ph-bold ph-check text-2xl text-green-400"></i>`;
+                    } else if (isActive) {
+                        classes += "active-node cursor-pointer";
+                        iconHtml = `<i class="ph-fill ph-play text-2xl text-navy"></i>`;
+                    }
 
-                    html += `
-                        <div class="relative w-full md:w-3/4 ${c.day % 2 === 0 ? 'md:ml-auto' : 'md:mr-auto'}">
-                            <div class="${classes}" ${isUnlocked ? `onclick="sfx.click(); engine.init(${c.day})"` : 'onclick="sfx.error()"'}>
-                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-black/40 flex items-center justify-center shrink-0 border border-white/10">
-                                    <i class="ph ${icon} text-2xl md:text-3xl"></i>
-                                </div>
-                                <div class="flex-1 w-full text-left">
-                                    <div class="text-[10px] md:text-xs text-white/50 uppercase tracking-widest font-bold mb-1">${t.day} ${c.day} • ${modeText}</div>
-                                    <h3 class="font-bold text-base md:text-lg text-white">${isUnlocked ? data.title : t.locked}</h3>
-                                </div>
+                    // Badge colors
+                    let badgeColor = "text-bee";
+                    if(dayData.type === 'ALES') badgeColor = "text-blue-400";
+                    if(dayData.type === 'YDS') badgeColor = "text-red-400";
+                    if(dayData.type === 'LGS') badgeColor = "text-green-400";
+
+                    const node = document.createElement('div');
+                    node.className = classes;
+                    if (!isLocked) node.onclick = () => lesson.open(dayData.day);
+                    
+                    node.innerHTML = `
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center shrink-0 border shadow-inner transition-all 
+                                    ${isActive ? 'bg-bee border-bee' : 'bg-black/50 border-white/10'}">
+                            ${iconHtml}
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs ${badgeColor} font-bold tracking-widest uppercase">Gün ${dayData.day}</span>
+                                <span class="text-xs text-slate-400 font-mono">${dayData.wpm} WPM</span>
                             </div>
+                            <h3 class="font-bold text-white text-lg leading-tight">${isLocked ? 'Kilitli Aşama' : dayData.topic}</h3>
                         </div>
                     `;
+                    container.appendChild(node);
                 });
-                container.innerHTML = html;
             }
         };
 
-        // --- READING ENGINE (Multi-Mode) ---
+        // --- LESSON INTRO ---
+        const lesson = {
+            open(dayNum) {
+                const dayData = CURRICULUM.find(d => d.day === dayNum);
+                sessionState.dayObj = dayData;
+                
+                document.getElementById('lesson-badge').innerText = dayData.type + ' Modu';
+                document.getElementById('lesson-title').innerText = `Gün ${dayData.day}: ${dayData.topic}`;
+                document.getElementById('lesson-desc').innerText = `Göz kaslarınızı ısıtarak başlayacak, ${dayData.wpm} WPM hedefine kadar aşamalı hızlanacak ve en sonunda okuduğunu anlama testiyle günü tamamlayacaksınız.`;
+                document.getElementById('lesson-wpm').innerText = dayData.wpm;
+                
+                app.navigate('lesson');
+            }
+        };
+
+        // --- READING ENGINE ---
         const engine = {
-            init(dayNum) {
-                appState.currentDayData = CURRICULUM.find(c => c.day === dayNum);
-                const data = appState.currentDayData;
-                const langData = data[appState.lang];
-                
-                appState.engine.wpm = data.wpmDefault;
-                document.getElementById('wpm-slider').value = data.wpmDefault;
-                document.getElementById('read-wpm-display').innerText = `${data.wpmDefault} WPM`;
-                
-                const t = i18nDict[appState.lang];
-                document.getElementById('read-mode-badge').innerText = t[data.mode + 'Mode'] || data.mode;
-                
-                this.prepareChunks(langData.content, data.mode);
-                
-                app.navigate('reading');
+            stages: [
+                { id: 'eye', name: 'Göz Kası', desc: 'Arıyı gözlerinle takip et' },
+                { id: 'word', name: 'Kelime Odak', desc: 'Merkeze odaklan' },
+                { id: 'sentence', name: 'Cümle Bloklama', desc: 'Bütünsel algıla' },
+                { id: 'paragraph', name: 'Paragraf Okuma', desc: 'Bağlamı yakala' }
+            ],
 
-                setTimeout(() => { this.play(); }, 600);
+            startDay() {
+                sessionState.stageIndex = 0;
+                sessionState.wpm = sessionState.dayObj.wpm;
+                document.getElementById('wpm-slider').value = sessionState.wpm;
+                this.loadStage();
+                app.navigate('trainer');
             },
-            
-            prepareChunks(text, mode) {
-                appState.engine.currentIndex = 0;
-                let chunks = [];
-                const elGuides = document.getElementById('focus-guides');
-                const readerCont = document.getElementById('reader-container');
 
-                if (mode === 'word') {
-                    chunks = text.trim().split(/\s+/).filter(w => w.length > 0);
-                    elGuides.style.display = 'block';
-                    readerCont.classList.add('items-center');
-                    readerCont.classList.remove('items-start');
+            loadStage() {
+                this.pause();
+                const sIdx = sessionState.stageIndex;
+                const stageConf = this.stages[sIdx];
+                
+                document.getElementById('trainer-stage-name').innerText = `${sIdx + 1}/4: ${stageConf.name}`;
+                document.getElementById('trainer-wpm').innerText = sessionState.wpm;
+                
+                const target = document.getElementById('eye-gym-target');
+                const focus = document.getElementById('focus-guides');
+                const display = document.getElementById('text-display');
+                const nextBtn = document.getElementById('btn-next-stage');
+                const playBtn = document.getElementById('btn-play');
+                
+                target.style.display = 'none';
+                focus.classList.add('hidden');
+                display.innerHTML = '';
+                nextBtn.classList.add('hidden');
+                playBtn.classList.remove('hidden');
+                
+                sessionState.chunkIdx = 0;
+                document.getElementById('prog-bar').style.width = '0%';
+                document.getElementById('prog-current').innerText = '0';
+                
+                const rawText = sessionState.dayObj.text;
+
+                if (sIdx === 0) { // Eye Gym
+                    target.style.display = 'flex';
+                    display.innerHTML = `<div class="text-slate-500 font-medium">Sadece gözlerinle takip et. Başını oynatma.</div>`;
+                    document.getElementById('prog-total').innerText = '15s';
                 } 
-                else if (mode === 'sentence') {
-                    chunks = text.match(/[^.!?]+[.!?]+/g) || [text];
-                    chunks = chunks.map(c => c.trim()).filter(c => c.length > 0);
-                    elGuides.style.display = 'none';
-                    readerCont.classList.add('items-center');
-                    readerCont.classList.remove('items-start');
+                else if (sIdx === 1) { // Word
+                    focus.classList.remove('hidden');
+                    sessionState.chunks = rawText.trim().split(/\s+/).filter(w => w.length > 0);
+                    document.getElementById('prog-total').innerText = sessionState.chunks.length;
+                    this.renderWord();
                 }
-                else if (mode === 'paragraph' || mode === 'page') {
-                    chunks = mode === 'page' ? [text] : text.split(/\n\n/).filter(c => c.trim().length > 0);
-                    elGuides.style.display = 'none';
-                    readerCont.classList.remove('items-center');
-                    readerCont.classList.add('items-start');
+                else if (sIdx === 2) { // Sentence
+                    sessionState.chunks = rawText.match(/[^.!?]+[.!?]+/g) || [rawText];
+                    sessionState.chunks = sessionState.chunks.map(c => c.trim()).filter(c => c.length > 0);
+                    document.getElementById('prog-total').innerText = sessionState.chunks.length;
+                    this.renderSentence();
                 }
-
-                appState.engine.chunks = chunks;
-                document.getElementById('progress-total').innerText = chunks.length;
-                this.updateUI();
-            },
-
-            play() {
-                if(appState.engine.currentIndex >= appState.engine.chunks.length) {
-                    appState.engine.currentIndex = 0;
+                else if (sIdx === 3) { // Paragraph
+                    sessionState.chunks = [rawText]; // treat as single flow
+                    document.getElementById('prog-total').innerText = '1';
+                    this.renderParagraph();
                 }
-                appState.engine.isPlaying = true;
-                sfx.vibrate(20);
-                
-                const btn = document.getElementById('btn-play-pause');
-                btn.classList.replace('bg-rose-600', 'bg-beeYellow');
-                btn.classList.replace('shadow-[0_0_20px_rgba(225,29,72,0.4)]', 'shadow-[0_0_20px_rgba(251,191,36,0.4)]');
-                document.getElementById('play-icon').classList.add('hidden');
-                document.getElementById('pause-icon').classList.remove('hidden');
-                
-                this.loop();
-            },
-
-            pause() {
-                appState.engine.isPlaying = false;
-                clearTimeout(appState.engine.timerId);
-                sfx.vibrate(10);
-                
-                const btn = document.getElementById('btn-play-pause');
-                btn.classList.replace('bg-beeYellow', 'bg-rose-600');
-                btn.classList.replace('shadow-[0_0_20px_rgba(251,191,36,0.4)]', 'shadow-[0_0_20px_rgba(225,29,72,0.4)]');
-                document.getElementById('pause-icon').classList.add('hidden');
-                document.getElementById('play-icon').classList.remove('hidden');
             },
 
             togglePlay() {
-                sfx.click();
-                if(appState.engine.isPlaying) this.pause();
+                if (sessionState.isPlaying) this.pause();
                 else this.play();
             },
 
-            loop() {
-                if (!appState.engine.isPlaying) return;
+            play() {
+                sessionState.isPlaying = true;
+                document.getElementById('icon-play').classList.add('hidden');
+                document.getElementById('icon-pause').classList.remove('hidden');
+                
+                if (sessionState.stageIndex === 0) this.runEyeGym();
+                else this.runReading();
+            },
 
-                if (appState.engine.currentIndex >= appState.engine.chunks.length) {
-                    this.finishReading(false);
+            pause() {
+                sessionState.isPlaying = false;
+                clearTimeout(sessionState.timer);
+                cancelAnimationFrame(sessionState.animFrame);
+                document.getElementById('icon-pause').classList.add('hidden');
+                document.getElementById('icon-play').classList.remove('hidden');
+            },
+
+            finishStage() {
+                this.pause();
+                document.getElementById('btn-play').classList.add('hidden');
+                document.getElementById('btn-next-stage').classList.remove('hidden');
+                document.getElementById('prog-bar').style.width = '100%';
+            },
+
+            nextStage() {
+                sessionState.stageIndex++;
+                if (sessionState.stageIndex > 3) {
+                    quiz.init(); // Go to quiz
+                } else {
+                    this.loadStage();
+                }
+            },
+
+            // --- Eye Gym Logic ---
+            runEyeGym() {
+                const target = document.getElementById('eye-gym-target');
+                const container = target.parentElement;
+                const duration = 15000; // 15 seconds
+                const start = performance.now();
+                
+                const animType = sessionState.dayObj.day % 5; // 0: infinity, 1: horizontal, 2: vertical, 3: diagonal, 4: circle
+
+                const animate = (now) => {
+                    if (!sessionState.isPlaying) return;
+                    
+                    const elapsed = now - start;
+                    if (elapsed >= duration) {
+                        this.finishStage();
+                        return;
+                    }
+
+                    // Progress update
+                    document.getElementById('prog-current').innerText = Math.floor(elapsed/1000) + 's';
+                    document.getElementById('prog-bar').style.width = `${(elapsed/duration)*100}%`;
+
+                    const w = container.clientWidth / 2 - 40;
+                    const h = container.clientHeight / 2 - 40;
+                    const t = elapsed * 0.003; // speed
+                    
+                    let x=0, y=0;
+                    
+                    switch(animType) {
+                        case 0: // Infinity (Lemniscate)
+                            x = (w * Math.cos(t)) / (1 + Math.pow(Math.sin(t), 2));
+                            y = (h * Math.sin(t) * Math.cos(t)) / (1 + Math.pow(Math.sin(t), 2));
+                            break;
+                        case 1: // Horizontal
+                            x = w * Math.sin(t);
+                            y = 0;
+                            break;
+                        case 2: // Vertical
+                            x = 0;
+                            y = h * Math.sin(t);
+                            break;
+                        case 3: // Diagonal
+                            x = w * Math.sin(t);
+                            y = h * Math.sin(t);
+                            break;
+                        case 4: // Circle
+                            x = w * Math.cos(t);
+                            y = h * Math.sin(t);
+                            break;
+                    }
+
+                    target.style.transform = `translate(${x}px, ${y}px)`;
+                    sessionState.animFrame = requestAnimationFrame(animate);
+                };
+                sessionState.animFrame = requestAnimationFrame(animate);
+            },
+
+            // --- Reading Logic ---
+            runReading() {
+                const sIdx = sessionState.stageIndex;
+                if (sessionState.chunkIdx >= sessionState.chunks.length) {
+                    this.finishStage();
                     return;
                 }
 
-                this.updateUI();
-                if(appState.currentDayData.mode === 'word') sfx.tick(); // Metronom effect
+                // Render current chunk
+                if (sIdx === 1) this.renderWord();
+                else if (sIdx === 2) this.renderSentence();
+                else if (sIdx === 3) this.renderParagraph();
 
-                const mode = appState.currentDayData.mode;
-                const chunkStr = appState.engine.chunks[appState.engine.currentIndex];
-                const wordsInChunk = chunkStr.split(/\s+/).length;
+                // Update Progress
+                document.getElementById('prog-current').innerText = sessionState.chunkIdx + 1;
+                document.getElementById('prog-bar').style.width = `${((sessionState.chunkIdx + 1) / sessionState.chunks.length) * 100}%`;
+
+                // Delay calculation
+                const chunkStr = sessionState.chunks[sessionState.chunkIdx];
+                const wordsCount = chunkStr.split(/\s+/).length;
+                let delay = (60000 / sessionState.wpm) * wordsCount;
+
+                if (sIdx === 1 && chunkStr.match(/[,.;!?]/)) delay *= 1.5; // punctuation pause
+                if (sIdx === 3) delay = wordsCount * 250; // ample time for paragraph, user can manually click next if needed
                 
-                let delay = (60000 / appState.engine.wpm) * wordsInChunk;
+                sessionState.chunkIdx++;
 
-                if (mode === 'word' && chunkStr.match(/[,.;!?]/)) delay *= 1.5;
-                if (mode === 'page') delay = wordsInChunk * 300; 
-
-                appState.engine.currentIndex++;
-                
-                appState.engine.timerId = setTimeout(() => {
-                    this.loop();
+                sessionState.timer = setTimeout(() => {
+                    this.runReading();
                 }, delay);
             },
 
-            updateUI() {
-                const idx = Math.min(appState.engine.currentIndex, appState.engine.chunks.length - 1);
-                if (idx < 0) return;
+            renderWord() {
+                const word = sessionState.chunks[sessionState.chunkIdx] || "";
+                const pivot = Math.max(0, Math.floor((word.length - 1) / 2));
+                const left = word.slice(0, pivot);
+                const center = word[pivot] || "";
+                const right = word.slice(pivot + 1);
 
-                const mode = appState.currentDayData.mode;
-                const chunk = appState.engine.chunks[idx];
-                const display = document.getElementById('word-display');
-                
-                document.getElementById('progress-current').innerText = idx + 1;
-                document.getElementById('progress-bar').style.width = `${((idx + 1) / appState.engine.chunks.length) * 100}%`;
-
-                if (mode === 'word') {
-                    const pivot = Math.floor((chunk.length - 1) / 2);
-                    display.innerHTML = `
-                        <div class="orp-container">
-                            <span class="orp-left">${chunk.slice(0, pivot)}</span>
-                            <span class="orp-center">${chunk[pivot]}</span>
-                            <span class="orp-right">${chunk.slice(pivot + 1)}</span>
-                        </div>
-                    `;
-                } else if (mode === 'sentence') {
-                    display.innerHTML = `<div class="text-center font-bold tracking-wide leading-tight px-4">${chunk}</div>`;
-                } else {
-                    display.innerHTML = `<div class="text-left font-medium text-lg sm:text-2xl md:text-3xl leading-relaxed text-white/90">${chunk.replace(/\n/g, '<br/>')}</div>`;
-                }
+                document.getElementById('text-display').innerHTML = `
+                    <div class="orp-container text-4xl md:text-6xl font-mono tracking-wide">
+                        <span class="orp-left text-white/80">${left}</span>
+                        <span class="orp-center">${center}</span>
+                        <span class="orp-right text-white/80">${right}</span>
+                    </div>
+                `;
             },
 
-            finishReading(manual = false) {
-                this.pause();
-                setTimeout(() => { quiz.init(); }, 400);
+            renderSentence() {
+                const sentence = sessionState.chunks[sessionState.chunkIdx] || "";
+                document.getElementById('text-display').innerHTML = `
+                    <div class="text-2xl md:text-4xl font-bold leading-tight text-white/90">
+                        ${sentence}
+                    </div>
+                `;
+            },
+
+            renderParagraph() {
+                const para = sessionState.chunks[sessionState.chunkIdx] || "";
+                // Remove center alignment for paragraph
+                document.getElementById('text-display').innerHTML = `
+                    <div class="text-left text-lg md:text-xl font-medium leading-relaxed text-white/80 p-4">
+                        ${para}
+                    </div>
+                `;
+                // In paragraph mode, allow manual completion
+                if(sessionState.chunkIdx === 0) {
+                    setTimeout(() => { this.finishStage(); }, 2000); // just to show it, then rely on user or timer
+                }
             }
         };
-
-        // UI Event Listeners for Engine
-        document.getElementById('btn-play-pause').addEventListener('click', () => engine.togglePlay());
-        document.getElementById('wpm-slider').addEventListener('input', (e) => {
-            appState.engine.wpm = parseInt(e.target.value);
-            document.getElementById('read-wpm-display').innerText = `${appState.engine.wpm} WPM`;
-        });
-        window.addEventListener('keydown', (e) => {
-            if (appState.mode === 'reading' && e.code === 'Space') {
-                e.preventDefault(); engine.togglePlay();
-            }
-        });
 
         // --- QUIZ SYSTEM ---
         const quiz = {
-            answers: {},
             init() {
-                this.answers = {};
-                const data = appState.currentDayData[appState.lang];
-                document.getElementById('quiz-content').style.display = 'block';
-                document.getElementById('quiz-result').style.display = 'none';
-                
-                let html = '';
-                data.questions.forEach((q, qIndex) => {
-                    html += `
-                        <div class="bg-black/30 p-4 md:p-6 rounded-2xl border border-white/10 shadow-inner">
-                            <p class="text-lg md:text-xl font-semibold mb-4 text-white/90">${q.q}</p>
-                            <div class="space-y-2 md:space-y-3">
-                                ${q.options.map((opt, oIndex) => `
-                                    <label class="flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-xl cursor-pointer transition-all border border-transparent bg-white/5 hover:bg-white/10 quiz-label-${qIndex}" id="label-${qIndex}-${oIndex}" onclick="sfx.click(); quiz.select(${qIndex}, ${oIndex})">
-                                        <div class="w-5 h-5 md:w-6 md:h-6 rounded-full border-2 border-white/30 flex items-center justify-center shrink-0 quiz-radio-${qIndex}" id="radio-${qIndex}-${oIndex}">
-                                            <div class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-beeYellow opacity-0 transition-opacity" id="dot-${qIndex}-${oIndex}"></div>
-                                        </div>
-                                        <span class="font-medium text-sm md:text-lg">${opt}</span>
-                                    </label>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
-                });
-
-                html += `<button id="btn-submit-quiz" onclick="quiz.submit()" disabled class="w-full py-3 md:py-4 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 font-bold text-lg md:text-xl shadow-lg disabled:opacity-50 transition-all mt-4 text-white hover:shadow-[0_0_20px_rgba(251,191,36,0.4)]" data-i18n="btnCompleteQuiz">${i18nDict[appState.lang].btnCompleteQuiz}</button>`;
-                
-                document.getElementById('quiz-content').innerHTML = html;
                 app.navigate('quiz');
+                sessionState.quizAnswers = {};
+                
+                const container = document.getElementById('quiz-container');
+                container.innerHTML = '';
+                document.getElementById('btn-submit-quiz').disabled = true;
+
+                const questions = sessionState.dayObj.questions;
+                
+                questions.forEach((q, qIdx) => {
+                    const block = document.createElement('div');
+                    block.className = "bg-black/30 p-6 md:p-8 rounded-[2rem] border border-white/5";
+                    
+                    let optsHtml = q.opts.map((opt, oIdx) => `
+                        <label class="flex items-center gap-4 p-4 rounded-xl border border-transparent bg-white/5 hover:bg-white/10 cursor-pointer transition-all quiz-label-${qIdx}" id="lbl-${qIdx}-${oIdx}" onclick="quiz.select(${qIdx}, ${oIdx})">
+                            <div class="w-6 h-6 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0 quiz-radio-${qIdx}" id="rad-${qIdx}-${oIdx}">
+                                <div class="w-3 h-3 rounded-full bg-bee opacity-0 transform scale-50 transition-all" id="dot-${qIdx}-${oIdx}"></div>
+                            </div>
+                            <span class="text-slate-200 font-medium">${opt}</span>
+                        </label>
+                    `).join('');
+
+                    block.innerHTML = `
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="px-2 py-1 rounded bg-bee/10 text-bee text-xs font-bold uppercase tracking-wider">${q.type}</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-6 leading-snug">${q.q}</h3>
+                        <div class="space-y-3">${optsHtml}</div>
+                    `;
+                    container.appendChild(block);
+                });
             },
 
-            select(qIndex, oIndex) {
-                this.answers[qIndex] = oIndex;
-                const data = appState.currentDayData[appState.lang];
+            select(qIdx, oIdx) {
+                sessionState.quizAnswers[qIdx] = oIdx;
                 
-                document.querySelectorAll(`.quiz-label-${qIndex}`).forEach(el => el.className = `flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-xl cursor-pointer transition-all border border-transparent bg-white/5 hover:bg-white/10 quiz-label-${qIndex}`);
-                document.querySelectorAll(`.quiz-radio-${qIndex}`).forEach(el => el.className = `w-5 h-5 md:w-6 md:h-6 rounded-full border-2 border-white/30 flex items-center justify-center shrink-0 quiz-radio-${qIndex}`);
-                document.querySelectorAll(`[id^="dot-${qIndex}"]`).forEach(el => el.classList.replace('opacity-100', 'opacity-0'));
+                // Reset styling for this question
+                document.querySelectorAll(`.quiz-label-${qIdx}`).forEach(el => el.className = `flex items-center gap-4 p-4 rounded-xl border border-transparent bg-white/5 hover:bg-white/10 cursor-pointer transition-all quiz-label-${qIdx}`);
+                document.querySelectorAll(`.quiz-radio-${qIdx}`).forEach(el => el.className = `w-6 h-6 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0 quiz-radio-${qIdx}`);
+                document.querySelectorAll(`[id^="dot-${qIdx}"]`).forEach(el => { el.classList.remove('opacity-100', 'scale-100'); el.classList.add('opacity-0', 'scale-50'); });
 
-                document.getElementById(`label-${qIndex}-${oIndex}`).classList.add('bg-beeYellow/20', 'border-beeYellow', 'text-yellow-100');
-                document.getElementById(`radio-${qIndex}-${oIndex}`).classList.replace('border-white/30', 'border-beeYellow');
-                document.getElementById(`dot-${qIndex}-${oIndex}`).classList.replace('opacity-0', 'opacity-100');
+                // Active styling
+                const lbl = document.getElementById(`lbl-${qIdx}-${oIdx}`);
+                const rad = document.getElementById(`rad-${qIdx}-${oIdx}`);
+                const dot = document.getElementById(`dot-${qIdx}-${oIdx}`);
+                
+                lbl.classList.add('bg-bee/10', 'border-bee/30');
+                rad.classList.replace('border-slate-500', 'border-bee');
+                dot.classList.remove('opacity-0', 'scale-50');
+                dot.classList.add('opacity-100', 'scale-100');
 
-                const answered = Object.keys(this.answers).length;
-                document.getElementById('btn-submit-quiz').disabled = answered < data.questions.length;
+                // Check completion
+                const totalQ = sessionState.dayObj.questions.length;
+                if (Object.keys(sessionState.quizAnswers).length === totalQ) {
+                    document.getElementById('btn-submit-quiz').disabled = false;
+                }
             },
 
             submit() {
-                let score = 0;
-                const data = appState.currentDayData[appState.lang];
-                const total = data.questions.length;
+                const qs = sessionState.dayObj.questions;
+                let correct = 0;
                 
-                data.questions.forEach((q, i) => { if (this.answers[i] === q.answer) score++; });
+                qs.forEach((q, idx) => {
+                    if (sessionState.quizAnswers[idx] === q.ans) correct++;
+                });
 
-                const passed = score === total;
-                const t = i18nDict[appState.lang];
+                const scorePct = Math.round((correct / qs.length) * 100);
+                const passed = scorePct >= 75;
                 
+                this.showResult(scorePct, passed);
+            },
+
+            showResult(score, passed) {
+                app.navigate('result');
+                
+                const u = appState.user;
+                const wpm = sessionState.wpm;
+                
+                // UI Elements
+                const title = document.getElementById('result-title');
+                const msg = document.getElementById('result-msg');
+                const circle = document.getElementById('result-circle');
+                const scoreTxt = document.getElementById('result-score');
+                const bgGlow = document.getElementById('result-bg-glow');
+                const btnAction = document.getElementById('btn-result-action');
+                
+                document.getElementById('result-wpm').innerText = wpm;
+
+                // Animate Score Ring
+                const circumference = 2 * Math.PI * 45; // r=45
+                const offset = circumference - (score / 100) * circumference;
+                
+                setTimeout(() => {
+                    circle.style.strokeDashoffset = offset;
+                    scoreTxt.innerText = `${score}%`;
+                }, 300);
+
                 if (passed) {
-                    sfx.success();
-                    appState.user.xp += 250;
-                    appState.user.level = Math.floor(appState.user.xp / 1000) + 1;
-                    if(appState.user.day === appState.currentDayData.day && appState.user.day < 10) {
-                        appState.user.day++;
+                    title.innerText = "Mükemmel! 🐝";
+                    msg.innerText = "Yeterli anlama oranına ulaştın. Hız ve anlama dengen çok iyi. Bir sonraki güne geçebilirsin.";
+                    circle.style.stroke = '#4ade80'; // green
+                    bgGlow.className = 'absolute inset-0 bg-green-500/10 filter blur-3xl rounded-full';
+                    
+                    const xpGained = 250;
+                    document.getElementById('result-xp').innerText = '+' + xpGained;
+                    
+                    // Update User Profile
+                    u.xp += xpGained;
+                    u.level = Math.floor(u.xp / 1000) + 1;
+                    u.stats.compSum += score;
+                    u.stats.compCount += 1;
+                    if (wpm > u.stats.bestWpm) u.stats.bestWpm = wpm;
+                    
+                    if (u.day === sessionState.dayObj.day && u.day < 50) {
+                        u.day++;
                     }
-                    app.saveUser();
+                    
+                    app.save();
+
+                    btnAction.innerText = "Sonraki Güne Geç";
+                    btnAction.onclick = () => { app.navigate('dashboard'); };
+                    
                 } else {
-                    sfx.error();
+                    title.innerText = "Tekrar Dene 🎯";
+                    msg.innerText = "Anlama oranın %75'in altında kaldı. Hız artışı, anlamı kaybetmeden yapılmalıdır. Günü tekrar et.";
+                    circle.style.stroke = '#fb7185'; // red
+                    bgGlow.className = 'absolute inset-0 bg-red-500/10 filter blur-3xl rounded-full';
+                    
+                    document.getElementById('result-xp').innerText = '+50';
+                    u.xp += 50; // Consolation XP
+                    app.save();
+
+                    btnAction.innerText = "Günü Tekrar Et";
+                    btnAction.onclick = () => { lesson.open(sessionState.dayObj.day); };
                 }
-
-                document.getElementById('quiz-content').style.display = 'none';
-                const res = document.getElementById('quiz-result');
-                res.style.display = 'block';
-                res.classList.remove('hidden');
-
-                const cColor = passed ? 'border-beeYellow' : 'border-rose-500';
-                const msg = passed ? t.perfect : t.tryAgain;
-                const unlockMsg = passed && appState.currentDayData.day < 10 ? `<p class="text-beeYellow font-bold mb-4 animate-pulse">${t.unlockDay}</p>` : '';
-
-                res.innerHTML = `
-                    <div class="inline-flex justify-center items-center w-32 h-32 md:w-40 md:h-40 rounded-full bg-black/30 border-[8px] md:border-[12px] border-white/5 mb-6 relative">
-                        <div class="absolute inset-0 rounded-full border-[8px] md:border-[12px] ${cColor} transition-all duration-1000" style="clip-path: polygon(0 0, 100% 0, 100% ${passed ? '100%' : '50%'}, 0 100%)"></div>
-                        <span class="text-4xl md:text-5xl font-bold text-white relative z-10">${score}/${total}</span>
-                    </div>
-                    <h3 class="text-2xl md:text-3xl font-bold mb-4 px-2">${msg}</h3>
-                    ${unlockMsg}
-                    <button onclick="sfx.click(); app.navigate('dashboard')" class="px-8 md:px-10 py-3 md:py-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 font-bold text-base md:text-lg transition-all">${t.backToDash}</button>
-                `;
             }
         };
 
-        // Bootstrap
-        window.onload = () => app.init();
+        // --- INIT ---
+        window.onload = () => {
+            app.init();
+        };
+
     </script>
 </body>
 </html>
