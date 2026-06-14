@@ -3,33 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BeeReady | Premium Hızlı Okuma ve Anlama Kampı</title>
+    <title>BeeReady | 2026 Premium Hızlı Okuma Kampı</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
     
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@500;700&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind Config -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['Fira Code', 'monospace'] },
+                    fontFamily: { 
+                        sans: ['Plus Jakarta Sans', 'sans-serif'], 
+                        mono: ['Fira Code', 'monospace'] 
+                    },
                     colors: { 
-                        bee: '#fbbf24', // amber-400
-                        beeDark: '#f59e0b', // amber-500
-                        navy: '#0f172a', // slate-900
-                        glass: 'rgba(255, 255, 255, 0.05)', 
-                        glassBorder: 'rgba(255, 255, 255, 0.1)',
+                        bee: '#FFC107', // Vibrant Amber
+                        beeDark: '#FF9800', 
+                        dark: '#030712', // Ultra dark gray/blue
+                        glassLight: 'rgba(255, 255, 255, 0.03)',
+                        glassBorder: 'rgba(255, 255, 255, 0.08)',
+                        glassHighlight: 'rgba(255, 255, 255, 0.15)',
                     },
                     boxShadow: {
-                        'glow': '0 0 20px rgba(251, 191, 36, 0.3)',
-                        'glow-lg': '0 0 40px rgba(251, 191, 36, 0.4)',
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
+                        'glow': '0 0 24px rgba(255, 193, 7, 0.4)',
+                        'inner-light': 'inset 0 1px 0 rgba(255, 255, 255, 0.1)',
                     }
                 }
             }
@@ -37,222 +37,255 @@
     </script>
     
     <style>
-        :root {
-            --bg-color: #0f172a;
-            --text-color: #f8fafc;
-        }
-
+        :root { --bg-color: #030712; --text-color: #f8fafc; }
         body { 
-            background-color: var(--bg-color); 
-            color: var(--text-color); 
-            overflow-x: hidden; 
-            -webkit-tap-highlight-color: transparent;
-            overscroll-behavior-y: none;
+            background-color: var(--bg-color); color: var(--text-color); 
+            overflow-x: hidden; -webkit-tap-highlight-color: transparent; overscroll-behavior-y: none;
         }
 
-        /* Custom Scrollbar */
+        /* Modern Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
-        ::-webkit-scrollbar-thumb { background: rgba(251, 191, 36, 0.3); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(251, 191, 36, 0.6); }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 193, 7, 0.2); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 193, 7, 0.5); }
         
-        /* Animated Blobs */
-        @keyframes float-1 { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.15; } 50% { transform: translate(5%, 5%) scale(1.1); opacity: 0.25; } }
-        @keyframes float-2 { 0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.1; } 50% { transform: translate(-5%, 5%) scale(1.15); opacity: 0.2; } }
-        .blob-1 { animation: float-1 15s ease-in-out infinite; background: radial-gradient(circle, #fbbf24 0%, transparent 70%); }
-        .blob-2 { animation: float-2 18s ease-in-out infinite alternate; background: radial-gradient(circle, #3b82f6 0%, transparent 70%); }
+        /* 2026 Ambient Mesh Gradient Blobs */
+        @keyframes float-1 { 0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0.15; } 50% { transform: translate(10%, 10%) scale(1.2) rotate(10deg); opacity: 0.25; } }
+        @keyframes float-2 { 0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0.1; } 50% { transform: translate(-10%, 5%) scale(1.3) rotate(-10deg); opacity: 0.2; } }
+        .blob-1 { animation: float-1 20s cubic-bezier(0.4, 0, 0.2, 1) infinite; background: radial-gradient(circle, #FFC107 0%, transparent 70%); }
+        .blob-2 { animation: float-2 25s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; background: radial-gradient(circle, #3b82f6 0%, transparent 70%); }
+        .blob-3 { animation: float-1 22s cubic-bezier(0.4, 0, 0.2, 1) infinite reverse alternate; background: radial-gradient(circle, #8b5cf6 0%, transparent 70%); }
         
+        .glass-panel {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--glassBorder);
+            box-shadow: var(--glass), var(--inner-light);
+        }
+        
+        .glass-card {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover { border-color: rgba(255, 193, 7, 0.3); background: rgba(255, 255, 255, 0.03); transform: translateY(-2px); }
+
         /* Screen Transitions */
-        .screen { display: none; opacity: 0; transform: translateY(10px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .screen { display: none; opacity: 0; transform: translateY(15px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .screen.active { display: flex; opacity: 1; transform: translateY(0); }
         
-        /* ORP Typography */
         .orp-container { display: flex; align-items: center; justify-content: center; width: 100%; white-space: pre; }
-        .orp-left { flex: 1; text-align: right; }
-        .orp-center { color: #fbbf24; font-weight: 900; text-shadow: 0 0 15px rgba(251, 191, 36, 0.6); }
-        .orp-right { flex: 1; text-align: left; }
+        .orp-left { flex: 1; text-align: right; color: rgba(255,255,255,0.7); }
+        .orp-center { color: #FFC107; font-weight: 800; text-shadow: 0 0 20px rgba(255, 193, 7, 0.5); }
+        .orp-right { flex: 1; text-align: left; color: rgba(255,255,255,0.7); }
 
-        /* Sliders */
-        input[type=range] { -webkit-appearance: none; background: rgba(255,255,255,0.1); border-radius: 8px; height: 6px; outline: none; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #fbbf24; cursor: pointer; box-shadow: 0 0 10px rgba(251, 191, 36, 0.5); transition: transform 0.1s; }
-        input[type=range]::-webkit-slider-thumb:active { transform: scale(1.2); }
+        input[type=range] { -webkit-appearance: none; background: rgba(255,255,255,0.05); border-radius: 8px; height: 6px; outline: none; border: 1px solid rgba(255,255,255,0.1); }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #FFC107; cursor: pointer; box-shadow: 0 0 15px rgba(255, 193, 7, 0.6); transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); border: 2px solid #fff; }
+        input[type=range]::-webkit-slider-thumb:active { transform: scale(1.3); }
         
-        /* Maps & Nodes */
-        .day-node { transition: all 0.2s ease; }
-        .day-node.locked { filter: grayscale(100%); opacity: 0.4; cursor: not-allowed; }
-        .day-node.active-node { border-color: #fbbf24; box-shadow: 0 0 25px rgba(251, 191, 36, 0.15); transform: scale(1.02); }
-        .day-node.completed { border-color: #4ade80; background: rgba(74, 222, 128, 0.05); }
-
-        /* Eye Gym Target */
-        #eye-gym-target {
-            position: absolute; width: 28px; height: 28px; background-color: #fbbf24; border-radius: 50%;
-            box-shadow: 0 0 20px #fbbf24, inset 0 0 10px #b45309; transition: transform 0.05s linear; z-index: 50; display: none;
-            display: flex; align-items: center; justify-content: center;
-        }
-        #eye-gym-target::after { content: ''; width: 12px; height: 12px; background: #fff; border-radius: 50%; opacity: 0.8; }
-
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
+        .day-node { transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer; }
+        .day-node.locked { filter: grayscale(100%); opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+        .day-node.active-node { border-color: #FFC107; box-shadow: 0 0 30px rgba(255, 193, 7, 0.15), inset 0 0 10px rgba(255, 193, 7, 0.05); transform: scale(1.02); background: rgba(255, 193, 7, 0.05); }
+        .day-node.completed { border-color: #10b981; background: rgba(16, 185, 129, 0.05); }
 
         .btn-primary {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            color: #0f172a;
-            box-shadow: 0 10px 25px -5px rgba(251, 191, 36, 0.4);
-            transition: all 0.2s;
+            background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
+            color: #030712;
+            box-shadow: 0 10px 25px -5px rgba(255, 193, 7, 0.4), inset 0 1px 1px rgba(255,255,255,0.4);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative; overflow: hidden;
         }
-        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 15px 30px -5px rgba(251, 191, 36, 0.5); }
+        .btn-primary::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: left 0.5s ease; }
+        .btn-primary:hover::after { left: 150%; }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 15px 35px -5px rgba(255, 193, 7, 0.5); }
         .btn-primary:active:not(:disabled) { transform: translateY(0); }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary:disabled { opacity: 0.5; filter: grayscale(1); cursor: not-allowed; }
 
-        .reading-area {
-            background: radial-gradient(circle at center, rgba(30,41,59,0.8) 0%, rgba(15,23,42,0.95) 100%);
+        .reading-area { background: radial-gradient(circle at center, rgba(15,23,42,0.6) 0%, rgba(3,7,18,0.9) 100%); box-shadow: inset 0 0 50px rgba(0,0,0,0.5); }
+        
+        #eye-gym-target {
+            position: absolute; width: 32px; height: 32px; background: radial-gradient(circle, #FFC107 30%, #FF9800 100%); border-radius: 50%;
+            box-shadow: 0 0 25px #FFC107, inset 0 0 8px rgba(255,255,255,0.8); transition: transform 0.05s linear; z-index: 50; display: none;
+            display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.5);
+        }
+
+        @keyframes popIn { 0% { transform: scale(0.9) translateY(20px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+        .fun-card { animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        
+        /* Certificate Hidden Wrapper */
+        #cert-container { position: absolute; left: -9999px; top: -9999px; }
+        .cert-card { 
+            width: 800px; height: 600px; 
+            background: linear-gradient(135deg, #0f172a 0%, #030712 100%);
+            border: 4px solid #FFC107;
+            padding: 40px; position: relative; overflow: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: white; text-align: center;
+        }
+        .cert-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,193,7,0.15) 0%, transparent 60%);
+            pointer-events: none;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-bee selection:text-navy">
+<body class="min-h-screen flex flex-col antialiased selection:bg-bee selection:text-dark">
 
-    <!-- Ambient Background -->
     <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div class="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full mix-blend-screen filter blur-[100px] blob-1"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full mix-blend-screen filter blur-[120px] blob-2"></div>
+        <div class="absolute top-[-20%] left-[-10%] w-[700px] h-[700px] rounded-full mix-blend-screen filter blur-[140px] blob-1"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full mix-blend-screen filter blur-[130px] blob-2"></div>
+        <div class="absolute top-[30%] left-[40%] w-[500px] h-[500px] rounded-full mix-blend-screen filter blur-[120px] blob-3"></div>
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMiIvPjwvc3ZnPg==')] opacity-30"></div>
     </div>
 
-    <!-- Header -->
-    <div class="relative z-10 w-full max-w-6xl mx-auto px-4 py-4 shrink-0">
-        <header class="flex justify-between items-center glass-panel p-4 rounded-3xl">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="app.navigate(appState.user ? 'dashboard' : 'onboarding')">
-                <div class="w-12 h-12 bg-gradient-to-br from-bee to-beeDark rounded-2xl flex items-center justify-center shadow-glow">
-                    <i class="ph-fill ph-hexagon text-3xl text-navy"></i>
+    <div class="relative z-10 w-full max-w-6xl mx-auto px-4 py-4 md:py-6 shrink-0">
+        <header class="flex justify-between items-center glass-panel p-3 md:p-4 md:px-6 rounded-[2rem] md:rounded-3xl">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="app.navigate(appState.user ? 'dashboard' : 'onboarding')">
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-bee to-beeDark rounded-2xl flex items-center justify-center shadow-glow group-hover:scale-105 transition-transform">
+                    <i class="ph-bold ph-hexagon text-2xl md:text-3xl text-dark"></i>
                 </div>
                 <div class="flex flex-col">
-                    <h1 class="text-2xl font-black tracking-tight text-white leading-none">
+                    <h1 class="text-xl md:text-2xl font-black tracking-tight text-white leading-none">
                         Bee<span class="text-bee">Ready</span>
                     </h1>
-                    <span class="text-[10px] text-bee/70 uppercase tracking-widest font-bold mt-0.5">Akademik Okuma</span>
+                    <span class="text-[9px] md:text-[10px] text-bee/80 uppercase tracking-widest font-bold mt-1">Premium Eğitim</span>
                 </div>
             </div>
             
-            <div id="header-profile" class="hidden items-center gap-4">
-                <div class="hidden md:flex flex-col items-end">
-                    <span id="header-name" class="text-sm font-bold text-white"></span>
-                    <span id="header-xp" class="text-xs text-bee font-mono"></span>
+            <div id="header-profile" class="hidden items-center gap-3 md:gap-4">
+                <div class="hidden sm:flex flex-col items-end">
+                    <span id="header-name" class="text-xs md:text-sm font-bold text-white tracking-wide"></span>
+                    <span id="header-xp" class="text-[10px] md:text-xs text-bee font-mono font-bold"></span>
                 </div>
-                <div class="h-10 px-3 bg-white/5 border border-white/10 rounded-xl flex items-center gap-2">
-                    <i class="ph-fill ph-lightning text-bee"></i>
-                    <span id="header-level" class="font-bold text-sm"></span>
+                <div class="h-9 md:h-10 px-3 md:px-4 bg-white/5 border border-white/10 rounded-xl flex items-center gap-2 shadow-inner">
+                    <i class="ph-fill ph-lightning text-bee text-base md:text-lg animate-pulse"></i>
+                    <span id="header-level" class="font-bold text-xs md:text-sm text-white"></span>
                 </div>
             </div>
         </header>
     </div>
 
-    <!-- Main Content Area -->
-    <div class="relative z-10 w-full max-w-6xl mx-auto px-4 pb-8 flex-1 flex flex-col h-full">
+    <div class="relative z-10 w-full max-w-6xl mx-auto px-4 pb-6 md:pb-8 flex-1 flex flex-col h-full">
 
         <!-- 1. ONBOARDING SCREEN -->
-        <main id="onboarding-screen" class="screen flex-col items-center justify-center w-full flex-1">
-            <div class="w-full max-w-xl glass-panel p-8 md:p-12 rounded-[2.5rem] text-center border-t border-white/20">
-                <div class="w-24 h-24 mx-auto bg-bee/10 rounded-full flex items-center justify-center mb-6 border border-bee/20">
-                    <i class="ph-fill ph-student text-5xl text-bee"></i>
-                </div>
-                <h2 class="text-3xl md:text-4xl font-black mb-4">Zihnini Hızlandır</h2>
-                <p class="text-slate-300 mb-8 text-lg leading-relaxed">50 günlük akademik programla okuma hızını, odaklanmayı ve anlama becerini en üst seviyeye taşı.</p>
+        <main id="onboarding-screen" class="screen flex-col items-center justify-center w-full flex-1 py-4">
+            <div class="w-full max-w-xl glass-panel p-6 sm:p-8 md:p-12 rounded-[2rem] md:rounded-[2.5rem] text-center border-t border-white/20 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-bee/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
                 
-                <div class="flex flex-col gap-4">
-                    <div class="relative">
-                        <i class="ph ph-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl"></i>
-                        <input type="text" id="ob-name" placeholder="Adın veya Rumuzun" class="w-full bg-black/40 border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-white focus:border-bee focus:ring-1 focus:ring-bee outline-none transition-all text-lg font-medium">
+                <div class="w-20 h-20 md:w-24 md:h-24 mx-auto bg-gradient-to-br from-white/10 to-white/5 rounded-2xl md:rounded-[2rem] flex items-center justify-center mb-6 md:mb-8 border border-white/20 shadow-glow relative z-10">
+                    <i class="ph-duotone ph-rocket-launch text-4xl md:text-5xl text-bee"></i>
+                </div>
+                <h2 class="text-2xl sm:text-3xl md:text-5xl font-black mb-3 md:mb-4 text-white relative z-10">Bilişsel Devrim</h2>
+                <p class="text-slate-300 mb-6 md:mb-8 text-base md:text-lg leading-relaxed relative z-10 font-medium">Modern bilime dayalı 50 seviyelik programla okuma hızını ve kavramsal derinliğini en üst düzeye çıkar.</p>
+                
+                <div class="flex flex-col gap-4 md:gap-5 relative z-10">
+                    <div class="relative flex flex-col sm:flex-row gap-3 md:gap-4">
+                        <div class="flex-1 w-full relative">
+                            <i class="ph-bold ph-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg md:text-xl"></i>
+                            <input type="text" id="ob-name" placeholder="Adınız" class="w-full bg-dark/50 border border-glassBorder rounded-xl md:rounded-2xl pl-10 md:pl-12 pr-4 py-3 md:py-4 text-white focus:border-bee focus:ring-1 focus:ring-bee outline-none transition-all text-base md:text-lg font-semibold shadow-inner">
+                        </div>
+                        <div class="flex-1 w-full relative">
+                            <input type="text" id="ob-surname" placeholder="Soyadınız" class="w-full bg-dark/50 border border-glassBorder rounded-xl md:rounded-2xl px-4 py-3 md:py-4 text-white focus:border-bee focus:ring-1 focus:ring-bee outline-none transition-all text-base md:text-lg font-semibold shadow-inner">
+                        </div>
                     </div>
-                    <button onclick="onboarding.start()" class="w-full py-4 rounded-2xl btn-primary font-bold text-lg tracking-wide flex items-center justify-center gap-2 mt-2">
-                        <span>Eğitime Başla</span>
-                        <i class="ph-bold ph-arrow-right"></i>
+                    <button onclick="onboarding.start()" class="w-full py-3.5 md:py-4 rounded-xl md:rounded-2xl btn-primary font-bold text-base md:text-lg tracking-wide flex items-center justify-center gap-2">
+                        <span>Yolculuğa Başla</span>
+                        <i class="ph-bold ph-arrow-right text-lg md:text-xl"></i>
                     </button>
-                </div>
-                
-                <div class="mt-8 grid grid-cols-3 gap-4 border-t border-white/5 pt-8">
-                    <div class="text-center"><div class="text-bee font-bold text-xl">50</div><div class="text-xs text-slate-400">Gün Kamp</div></div>
-                    <div class="text-center"><div class="text-bee font-bold text-xl">5</div><div class="text-xs text-slate-400">Aşama/Gün</div></div>
-                    <div class="text-center"><div class="text-bee font-bold text-xl">%75</div><div class="text-xs text-slate-400">Geçme Notu</div></div>
                 </div>
             </div>
         </main>
 
-        <!-- 2. DASHBOARD (50-DAY MAP) -->
-        <main id="dashboard-screen" class="screen flex-col gap-6 w-full flex-1">
-            <div class="glass-panel p-6 md:p-8 rounded-[2rem] flex flex-col md:flex-row items-center justify-between gap-6">
-                <div>
-                    <h2 class="text-3xl font-black">Hoş Geldin, <span id="dash-name" class="text-bee"></span>!</h2>
-                    <p class="text-slate-400 mt-2 font-medium">Günlük görevlerini tamamla, seviyeni yükselt.</p>
+        <!-- 2. DASHBOARD (50-LEVEL MAP) -->
+        <main id="dashboard-screen" class="screen flex-col gap-4 md:gap-6 w-full flex-1">
+            <div class="glass-panel p-5 sm:p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] flex flex-col md:flex-row items-start md:items-center justify-between gap-5 md:gap-6 border-l-4 border-l-bee relative overflow-hidden">
+                <div class="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-bee/5 to-transparent pointer-events-none"></div>
+                <div class="relative z-10 w-full md:w-auto">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-black truncate">Hoş Geldin, <span id="dash-name" class="text-bee"></span></h2>
+                    <p class="text-slate-300 mt-1 md:mt-2 font-medium text-sm md:text-lg">Seviyeleri tamamla, zihinsel potansiyelini açığa çıkar.</p>
                 </div>
-                <div class="w-full md:w-64 bg-black/30 p-4 rounded-2xl border border-white/5">
-                    <div class="flex justify-between text-sm mb-2 font-bold">
-                        <span class="text-slate-300">İlerleme</span>
-                        <span id="dash-progress" class="text-bee"></span>
+                <div class="w-full md:w-72 bg-dark/40 p-4 md:p-5 rounded-xl md:rounded-2xl border border-glassBorder relative z-10 shadow-inner shrink-0">
+                    <div class="flex justify-between text-xs md:text-sm mb-2 md:mb-3 font-bold">
+                        <span class="text-slate-300">Akademik İlerleme</span>
+                        <span id="dash-progress" class="text-bee text-base md:text-lg"></span>
                     </div>
-                    <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                        <div id="dash-bar" class="h-full bg-bee transition-all duration-1000" style="width: 0%"></div>
+                    <div class="w-full h-2 md:h-2.5 bg-slate-800 rounded-full overflow-hidden shadow-inner">
+                        <div id="dash-bar" class="h-full bg-gradient-to-r from-bee to-beeDark transition-all duration-1000 ease-out" style="width: 0%"></div>
                     </div>
-                    <div class="flex justify-between text-xs mt-3 text-slate-400">
-                        <span>Ort. Anlama: <strong id="dash-comp" class="text-white"></strong></span>
-                        <span>Max Hız: <strong id="dash-wpm" class="text-white"></strong></span>
+                    <div class="flex justify-between text-[10px] md:text-xs mt-3 md:mt-4 font-medium mb-3 md:mb-4">
+                        <span class="text-slate-400">Anlama Oranı: <strong id="dash-comp" class="text-white text-xs md:text-sm"></strong></span>
+                        <span class="text-slate-400">Max Hız: <strong id="dash-wpm" class="text-white text-xs md:text-sm"></strong></span>
                     </div>
+                    <button onclick="certManager.generateAndDownload()" class="w-full py-2 md:py-2.5 rounded-lg md:rounded-xl bg-bee/10 hover:bg-bee/20 border border-bee/30 text-bee text-xs md:text-sm font-bold flex items-center justify-center gap-1.5 md:gap-2 transition-all">
+                        <i class="ph-bold ph-certificate text-base md:text-lg"></i> Sertifikamı İndir
+                    </button>
                 </div>
             </div>
 
             <!-- Road Map Container -->
-            <div class="glass-panel p-6 md:p-8 rounded-[2rem] flex-1 overflow-y-auto custom-scrollbar relative">
-                <div class="absolute top-8 bottom-8 left-10 md:left-1/2 w-1 bg-white/5 transform md:-translate-x-1/2 rounded-full"></div>
-                <div id="roadmap-container" class="relative space-y-4 pb-8">
+            <div class="glass-panel p-4 sm:p-6 md:p-10 rounded-[1.5rem] md:rounded-[2rem] flex-1 overflow-y-auto custom-scrollbar relative">
+                <div class="absolute top-10 bottom-10 left-8 md:left-1/2 w-1 bg-gradient-to-b from-white/10 via-bee/20 to-white/10 transform md:-translate-x-1/2 rounded-full"></div>
+                <div id="roadmap-container" class="relative space-y-4 md:space-y-6 pb-4 md:pb-8">
                     <!-- JS Injected Nodes -->
                 </div>
             </div>
         </main>
 
         <!-- 3. LESSON INTRO -->
-        <main id="lesson-screen" class="screen flex-col items-center justify-center w-full flex-1">
-            <div class="w-full max-w-3xl glass-panel p-8 md:p-10 rounded-[2.5rem] relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-8 opacity-10"><i class="ph-fill ph-target text-9xl"></i></div>
+        <main id="lesson-screen" class="screen flex-col items-center justify-center w-full flex-1 py-4">
+            <div class="w-full max-w-3xl glass-panel p-6 sm:p-8 md:p-12 rounded-[2rem] md:rounded-[2.5rem] relative overflow-hidden text-center md:text-left">
+                <div class="absolute -top-10 -right-10 w-64 h-64 bg-bee/10 rounded-full blur-[60px] pointer-events-none"></div>
                 
-                <div class="inline-block px-4 py-1.5 bg-bee/20 text-bee rounded-full font-bold text-sm tracking-widest uppercase mb-4 border border-bee/20" id="lesson-badge"></div>
-                <h2 class="text-3xl md:text-5xl font-black mb-4" id="lesson-title"></h2>
-                <p class="text-slate-300 text-lg mb-8 leading-relaxed max-w-xl" id="lesson-desc"></p>
-                
-                <div class="bg-black/30 rounded-2xl p-6 border border-white/5 mb-8">
-                    <h3 class="font-bold text-white mb-4 flex items-center gap-2"><i class="ph-fill ph-list-numbers text-bee"></i> Günün Aşamaları</h3>
-                    <ul class="space-y-3 text-sm text-slate-300 font-medium">
-                        <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs">1</div> <span>Göz Kası Pratiği (Takip)</span></li>
-                        <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs">2</div> <span>Kelime Okuma (ORP)</span></li>
-                        <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs">3</div> <span>Cümle Okuma (Bloklama)</span></li>
-                        <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs">4</div> <span>Paragraf Okuma (<span id="lesson-wpm" class="text-bee"></span> WPM)</span></li>
-                        <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs">5</div> <span>Anlama Testi (Min %75)</span></li>
-                    </ul>
-                </div>
+                <div class="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start relative z-10">
+                    <div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl md:rounded-3xl bg-glassLight border border-glassBorder flex items-center justify-center shrink-0 shadow-glass">
+                        <i class="ph-duotone ph-book-open-text text-4xl md:text-5xl text-bee"></i>
+                    </div>
+                    
+                    <div class="flex-1 w-full">
+                        <div class="inline-block px-3 md:px-4 py-1 md:py-1.5 bg-bee/10 text-bee rounded-full font-bold text-[10px] md:text-xs tracking-widest uppercase mb-3 md:mb-4 border border-bee/20" id="lesson-badge"></div>
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-black mb-3 md:mb-4 text-white" id="lesson-title"></h2>
+                        <p class="text-slate-300 text-sm sm:text-base md:text-lg mb-6 md:mb-8 leading-relaxed" id="lesson-desc"></p>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
+                            <div class="bg-dark/40 p-3 md:p-4 rounded-xl md:rounded-2xl border border-glassBorder text-center">
+                                <i class="ph-fill ph-eye text-lg md:text-xl text-slate-400 mb-1.5 md:mb-2"></i><div class="text-[10px] md:text-xs font-bold text-white">Takip</div>
+                            </div>
+                            <div class="bg-dark/40 p-3 md:p-4 rounded-xl md:rounded-2xl border border-glassBorder text-center">
+                                <i class="ph-fill ph-text-aa text-lg md:text-xl text-slate-400 mb-1.5 md:mb-2"></i><div class="text-[10px] md:text-xs font-bold text-white">ORP</div>
+                            </div>
+                            <div class="bg-dark/40 p-3 md:p-4 rounded-xl md:rounded-2xl border border-glassBorder text-center">
+                                <i class="ph-fill ph-text-align-left text-lg md:text-xl text-slate-400 mb-1.5 md:mb-2"></i><div class="text-[10px] md:text-xs font-bold text-white">Bloklama</div>
+                            </div>
+                            <div class="bg-dark/40 p-3 md:p-4 rounded-xl md:rounded-2xl border border-bee/30 text-center shadow-glow">
+                                <i class="ph-fill ph-gauge text-lg md:text-xl text-bee mb-1.5 md:mb-2"></i><div class="text-[10px] md:text-xs font-bold text-white"><span id="lesson-wpm"></span> WPM</div>
+                            </div>
+                        </div>
 
-                <div class="flex gap-4">
-                    <button onclick="engine.startDay()" class="flex-1 py-4 rounded-2xl btn-primary font-bold text-lg">Güne Başla</button>
-                    <button onclick="app.navigate('dashboard')" class="px-6 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 font-bold transition-all">İptal</button>
+                        <div class="flex flex-col sm:flex-row gap-3 md:gap-4 w-full">
+                            <button onclick="engine.startLevel()" class="flex-1 w-full py-3.5 md:py-4 rounded-xl md:rounded-2xl btn-primary font-bold text-base md:text-lg tracking-wide">Seviyeye Başla</button>
+                            <button onclick="ui.interact(); app.navigate('dashboard')" class="flex-1 w-full py-3.5 md:py-4 rounded-xl md:rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 font-bold transition-all text-white text-base md:text-lg">İptal</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
 
         <!-- 4. TRAINER / READING SCREEN -->
-        <main id="trainer-screen" class="screen flex-col items-center justify-center w-full flex-1">
-            <div class="w-full flex justify-between items-center mb-4 px-2">
-                <div class="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-xl border border-white/10">
-                    <div class="w-2 h-2 rounded-full bg-bee animate-pulse"></div>
-                    <span class="text-sm font-bold tracking-wide" id="trainer-stage-name">Aşama</span>
+        <main id="trainer-screen" class="screen flex-col items-center justify-center w-full flex-1 py-2">
+            <div class="w-full flex justify-between items-center mb-4 md:mb-6 px-1 md:px-2">
+                <div class="flex items-center gap-2 md:gap-3 bg-glassLight px-3 md:px-5 py-2 md:py-2.5 rounded-xl md:rounded-2xl border border-glassBorder shadow-glass">
+                    <div class="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-bee animate-pulse shadow-[0_0_10px_#FFC107]"></div>
+                    <span class="text-xs md:text-sm font-bold tracking-wide text-white uppercase" id="trainer-stage-name">Aşama</span>
                 </div>
-                <div class="bg-white/5 px-4 py-2 rounded-xl border border-white/10 font-mono text-bee font-bold text-sm" id="trainer-wpm-box">
-                    <span id="trainer-wpm"></span> WPM
+                <div class="bg-dark/60 px-3 md:px-5 py-2 md:py-2.5 rounded-xl md:rounded-2xl border border-bee/30 font-mono text-bee font-bold text-xs md:text-sm shadow-inner flex items-center gap-1.5 md:gap-2">
+                    <i class="ph-fill ph-gauge"></i> <span id="trainer-wpm"></span> WPM
                 </div>
             </div>
 
             <!-- Reading Area -->
-            <div class="reading-area relative w-full h-[60vh] min-h-[350px] max-h-[500px] border border-white/10 rounded-[2rem] shadow-2xl flex items-center justify-center overflow-hidden p-6 md:p-12 transition-all">
+            <div class="reading-area relative w-full h-[50vh] sm:h-[60vh] min-h-[280px] md:min-h-[400px] border border-glassBorder rounded-[1.5rem] md:rounded-[2.5rem] flex items-center justify-center overflow-hidden p-4 sm:p-6 md:p-12 transition-all">
                 
                 <!-- Eye Gym Target -->
                 <div id="eye-gym-target"></div>
@@ -260,7 +293,7 @@
                 <!-- Word Focus Guides -->
                 <div id="focus-guides" class="hidden absolute inset-0 pointer-events-none">
                     <div class="absolute top-0 bottom-0 left-1/2 w-[1px] bg-red-500/20 transform -translate-x-1/2"></div>
-                    <div class="absolute top-1/2 left-1/2 w-4 h-4 border-t-2 border-b-2 border-red-500/40 transform -translate-x-1/2 -translate-y-1/2 rounded-sm"></div>
+                    <div class="absolute top-1/2 left-1/2 w-6 h-6 md:w-8 md:h-8 border-t-2 border-b-2 border-red-500/30 transform -translate-x-1/2 -translate-y-1/2 rounded-lg transition-all duration-300"></div>
                 </div>
 
                 <!-- Text Display -->
@@ -268,29 +301,40 @@
             </div>
 
             <!-- Progress & Controls -->
-            <div class="w-full mt-6 glass-panel p-4 md:p-6 rounded-[2rem] flex flex-col gap-4">
+            <div class="w-full mt-4 md:mt-6 glass-panel p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] flex flex-col gap-4 md:gap-5">
                 
-                <div class="flex items-center gap-4 px-2">
-                    <span id="prog-current" class="text-xs font-mono text-slate-400 w-8 text-right">0</span>
-                    <div class="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
-                        <div id="prog-bar" class="h-full bg-bee transition-all duration-100 ease-linear" style="width: 0%"></div>
+                <div class="flex items-center gap-3 md:gap-4 px-1 md:px-2">
+                    <span id="prog-current" class="text-[10px] md:text-xs font-mono text-slate-400 w-8 md:w-10 text-right font-bold">0</span>
+                    <div class="flex-1 h-1.5 md:h-2 bg-dark/80 rounded-full overflow-hidden shadow-inner border border-white/5">
+                        <div id="prog-bar" class="h-full bg-gradient-to-r from-bee to-beeDark transition-all duration-100 ease-linear shadow-[0_0_10px_#FFC107]" style="width: 0%"></div>
                     </div>
-                    <span id="prog-total" class="text-xs font-mono text-slate-400 w-8">0</span>
+                    <span id="prog-total" class="text-[10px] md:text-xs font-mono text-slate-400 w-8 md:w-10 font-bold">0</span>
                 </div>
 
-                <div class="flex items-center justify-between gap-4">
-                    <div class="flex-1 max-w-[200px]">
-                        <input type="range" id="wpm-slider" min="150" max="800" step="10" class="w-full hidden">
+                <!-- Responsive Controls Layout -->
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-4 relative w-full">
+                    
+                    <!-- Live WPM Slider -->
+                    <div class="w-full md:flex-1 md:max-w-[250px] flex flex-col gap-1 md:gap-1.5 order-2 md:order-1" id="wpm-control-container">
+                        <div class="flex justify-between text-[9px] md:text-[10px] text-white/50 font-bold uppercase tracking-wider px-1">
+                            <span>Canlı Hız</span>
+                            <span id="slider-wpm-val" class="text-bee">200</span>
+                        </div>
+                        <input type="range" id="wpm-slider" min="150" max="800" step="10" class="w-full">
                     </div>
                     
-                    <button id="btn-play" onclick="engine.togglePlay()" class="w-16 h-16 rounded-full bg-bee text-navy flex items-center justify-center shadow-glow transform transition-all hover:scale-105 active:scale-95">
-                        <i class="ph-fill ph-play text-3xl ml-1" id="icon-play"></i>
-                        <i class="ph-fill ph-pause text-3xl hidden" id="icon-pause"></i>
-                    </button>
+                    <!-- Play Button -->
+                    <div class="order-1 md:order-2 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 flex justify-center w-full md:w-auto z-10">
+                        <button id="btn-play" onclick="engine.togglePlay()" class="w-14 h-14 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-bee to-beeDark text-dark flex items-center justify-center shadow-glow transform transition-all hover:scale-105 active:scale-95 border-2 md:border-4 border-white/10 mx-auto">
+                            <i class="ph-fill ph-play text-2xl md:text-4xl ml-1 md:ml-1.5" id="icon-play"></i>
+                            <i class="ph-fill ph-pause text-2xl md:text-4xl hidden" id="icon-pause"></i>
+                        </button>
+                    </div>
                     
-                    <div class="flex-1 flex justify-end">
-                        <button id="btn-next-stage" onclick="engine.nextStage()" class="hidden px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 font-bold transition-all border border-white/10 text-sm">
-                            Sonraki <i class="ph-bold ph-arrow-right ml-1"></i>
+                    <!-- Next Stage Button -->
+                    <div class="w-full md:flex-1 flex justify-center md:justify-end order-3 z-10">
+                        <button id="btn-next-stage" onclick="engine.nextStage()" class="hidden w-full md:w-auto px-6 md:px-8 py-3 md:py-3.5 rounded-xl md:rounded-2xl bg-white/10 hover:bg-white/20 font-bold transition-all border border-white/10 text-sm items-center justify-center gap-2 text-white flex">
+                            Sonraki <i class="ph-bold ph-arrow-right"></i>
                         </button>
                     </div>
                 </div>
@@ -298,133 +342,203 @@
         </main>
 
         <!-- 5. QUIZ SCREEN -->
-        <main id="quiz-screen" class="screen flex-col items-center justify-start w-full flex-1 pt-4 overflow-y-auto custom-scrollbar">
-            <div class="w-full max-w-3xl glass-panel p-6 md:p-10 rounded-[2.5rem] relative shrink-0">
-                <div class="flex items-center justify-between mb-8 pb-6 border-b border-white/10">
-                    <h2 class="text-3xl font-black flex items-center gap-3"><i class="ph-fill ph-brain text-bee"></i> Anlama Testi</h2>
-                    <div class="text-sm font-bold bg-white/5 px-3 py-1 rounded-lg border border-white/10 text-slate-300">Aşama 5/5</div>
+        <main id="quiz-screen" class="screen flex-col items-center justify-start w-full flex-1 pt-2 md:pt-4 overflow-y-auto custom-scrollbar">
+            <div class="w-full max-w-3xl glass-panel p-5 sm:p-8 md:p-12 rounded-[1.5rem] md:rounded-[2.5rem] relative shrink-0">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-bee to-transparent opacity-50"></div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 md:mb-10 pb-4 md:pb-6 border-b border-glassBorder">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-black flex items-center gap-2 md:gap-3 text-white"><i class="ph-duotone ph-brain text-bee text-3xl md:text-4xl"></i> Bilişsel Test</h2>
+                        <p class="text-slate-400 text-xs md:text-sm mt-1 font-medium">Metni ne kadar kavradığını ölçelim.</p>
+                    </div>
+                    <div class="self-start sm:self-auto text-xs md:text-sm font-bold bg-dark/50 px-3 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-xl border border-glassBorder text-bee shadow-inner whitespace-nowrap">Aşama 5/5</div>
                 </div>
                 
-                <div id="quiz-container" class="space-y-8">
+                <div id="quiz-container" class="space-y-5 md:space-y-6">
                     <!-- Questions injected here -->
                 </div>
 
-                <button id="btn-submit-quiz" onclick="quiz.submit()" disabled class="w-full mt-10 py-5 rounded-2xl btn-primary font-bold text-xl">Testi Tamamla ve Puanla</button>
+                <button id="btn-submit-quiz" onclick="quiz.submit()" disabled class="w-full mt-8 md:mt-10 py-4 md:py-5 rounded-xl md:rounded-2xl btn-primary font-bold text-lg md:text-xl transition-all shadow-glow">Cevapları Onayla</button>
             </div>
         </main>
 
         <!-- 6. RESULT SCREEN -->
-        <main id="result-screen" class="screen flex-col items-center justify-center w-full flex-1">
-            <div class="w-full max-w-xl glass-panel p-8 md:p-12 rounded-[2.5rem] text-center relative overflow-hidden">
-                <div id="result-bg-glow" class="absolute inset-0 bg-bee/5 filter blur-3xl rounded-full"></div>
+        <main id="result-screen" class="screen flex-col items-center justify-center w-full flex-1 py-4">
+            <div class="w-full max-w-2xl glass-panel p-6 sm:p-8 md:p-14 rounded-[2rem] md:rounded-[3rem] text-center relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-t border-white/20">
+                <div id="result-bg-glow" class="absolute inset-0 bg-bee/10 filter blur-[100px] rounded-full pointer-events-none transition-colors duration-1000"></div>
                 
-                <h2 class="text-3xl font-black mb-8 relative z-10" id="result-title">Gün Özeti</h2>
+                <!-- Fun Congrats Card -->
+                <div id="congrats-card" class="hidden fun-card bg-gradient-to-r from-bee to-beeDark text-dark rounded-xl md:rounded-2xl p-3 md:p-4 font-black shadow-glow mb-6 md:mb-8 relative z-10 mx-auto max-w-md border border-white/40">
+                    <div class="flex items-center justify-center gap-1.5 md:gap-2 mb-1">
+                        <i class="ph-fill ph-shooting-star text-lg md:text-2xl"></i>
+                        <span class="uppercase tracking-widest text-[10px] md:text-xs font-bold opacity-80">Harika İş Çıkardın</span>
+                        <i class="ph-fill ph-shooting-star text-lg md:text-2xl"></i>
+                    </div>
+                    <p id="congrats-text" class="text-base md:text-xl leading-tight"></p>
+                </div>
                 
-                <div class="relative w-48 h-48 mx-auto mb-8 z-10 flex items-center justify-center">
-                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                        <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"></circle>
-                        <circle id="result-circle" cx="50" cy="50" r="45" fill="none" stroke="#fbbf24" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="283" class="transition-all duration-1500 ease-out stroke-current"></circle>
+                <div class="relative w-36 h-36 md:w-48 md:h-48 mx-auto mb-6 md:mb-8 z-10 flex items-center justify-center">
+                    <svg class="w-full h-full transform -rotate-90 drop-shadow-2xl" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(0,0,0,0.5)" stroke-width="8"></circle>
+                        <circle id="result-circle" cx="50" cy="50" r="45" fill="none" stroke="#FFC107" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="283" stroke-linecap="round" class="transition-all duration-1500 ease-out"></circle>
                     </svg>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center">
-                        <span id="result-score" class="text-5xl font-black">0%</span>
-                        <span class="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">Skor</span>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center bg-dark/30 rounded-full m-2 backdrop-blur-sm border border-white/5">
+                        <span id="result-score" class="text-4xl md:text-5xl font-black text-white drop-shadow-md">0%</span>
+                        <span class="text-[9px] md:text-[10px] text-slate-300 font-bold uppercase tracking-widest mt-1">Anlama</span>
                     </div>
                 </div>
 
-                <p id="result-msg" class="text-lg text-slate-300 mb-8 font-medium relative z-10"></p>
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-black mb-2 md:mb-3 relative z-10 text-white" id="result-title">Özet</h2>
+                <p id="result-msg" class="text-sm sm:text-base md:text-lg text-slate-300 mb-6 md:mb-10 font-medium relative z-10 leading-relaxed"></p>
 
-                <div class="grid grid-cols-2 gap-4 mb-8 relative z-10">
-                    <div class="bg-black/40 p-4 rounded-2xl border border-white/5">
-                        <div class="text-sm text-slate-400 mb-1">Ortalama Hız</div>
-                        <div class="text-2xl font-bold text-white"><span id="result-wpm">0</span> <span class="text-xs text-bee font-mono">WPM</span></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mb-6 md:mb-10 relative z-10">
+                    <div class="bg-dark/60 p-4 md:p-5 rounded-xl md:rounded-2xl border border-glassBorder shadow-inner">
+                        <div class="text-[10px] md:text-xs text-slate-400 mb-1.5 md:mb-2 font-bold uppercase tracking-wider">İşlenen Hız</div>
+                        <div class="text-2xl md:text-3xl font-black text-white"><span id="result-wpm">0</span> <span class="text-xs md:text-sm text-bee font-mono">WPM</span></div>
                     </div>
-                    <div class="bg-black/40 p-4 rounded-2xl border border-white/5">
-                        <div class="text-sm text-slate-400 mb-1">Kazanılan XP</div>
-                        <div class="text-2xl font-bold text-white"><span id="result-xp">+0</span> <span class="text-xs text-bee font-mono">XP</span></div>
+                    <div class="bg-dark/60 p-4 md:p-5 rounded-xl md:rounded-2xl border border-glassBorder shadow-inner">
+                        <div class="text-[10px] md:text-xs text-slate-400 mb-1.5 md:mb-2 font-bold uppercase tracking-wider">Kazanılan XP</div>
+                        <div class="text-2xl md:text-3xl font-black text-white"><span id="result-xp">+0</span> <span class="text-xs md:text-sm text-bee font-mono">XP</span></div>
                     </div>
                 </div>
 
-                <div class="flex gap-4 relative z-10">
-                    <button onclick="app.navigate('dashboard')" class="flex-1 py-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 font-bold transition-all">Haritaya Dön</button>
-                    <button id="btn-result-action" class="flex-1 py-4 rounded-2xl btn-primary font-bold"></button>
+                <div class="flex flex-col sm:flex-row gap-3 md:gap-4 relative z-10">
+                    <button onclick="ui.interact(); app.navigate('dashboard')" class="w-full sm:flex-1 py-3.5 md:py-5 rounded-xl md:rounded-2xl bg-white/5 hover:bg-white/10 border border-glassBorder font-bold transition-all text-white text-base md:text-lg">Menüye Dön</button>
+                    <button id="btn-result-action" class="w-full sm:flex-1 py-3.5 md:py-5 rounded-xl md:rounded-2xl btn-primary font-bold text-base md:text-lg"></button>
+                </div>
+                
+                <div id="share-container" class="mt-4 md:mt-6 hidden relative z-10">
+                    <button onclick="certManager.shareLevelUp()" class="w-full py-3 md:py-4 rounded-xl md:rounded-2xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 hover:from-blue-500/30 hover:to-purple-500/30 border border-blue-400/30 font-bold transition-all text-white text-sm md:text-md flex items-center justify-center gap-2 shadow-glow">
+                        <i class="ph-bold ph-share-network text-lg md:text-xl"></i> Başarımı Sosyal Medyada Paylaş
+                    </button>
                 </div>
             </div>
         </main>
 
     </div>
+    
+    <!-- Footer Section -->
+    <footer class="relative z-10 w-full text-center py-4 md:py-5 text-slate-500 text-[10px] md:text-xs tracking-wider border-t border-white/5 mt-auto bg-dark/80 backdrop-blur-md">
+        <p class="px-4">Bu içerik <strong class="text-slate-300">Öğr. Gör. SİMGE SOYDAN</strong> danışmanlığı ile Görsel İletişim Tasarımı Uzmanı <strong class="text-slate-300">Semanur Ayyıldız</strong> tarafından geliştirilmiştir.</p>
+    </footer>
 
-    <!-- MAIN JAVASCRIPT LOGIC -->
+    <!-- Hidden Certificate DOM (Rendered into Canvas) -->
+    <div id="cert-container">
+        <div id="certificate-node" class="cert-card flex flex-col items-center justify-center">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-bee/20 rounded-full blur-[80px] pointer-events-none"></div>
+            <div class="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/20 rounded-full blur-[80px] pointer-events-none"></div>
+            
+            <i class="ph-fill ph-hexagon text-6xl text-bee mb-4 relative z-10 shadow-glow rounded-full"></i>
+            <h1 class="text-5xl font-black tracking-tight text-white leading-none relative z-10 mb-2">
+                Bee<span class="text-bee">Ready</span>
+            </h1>
+            <p class="text-bee uppercase tracking-widest font-bold mb-10 text-sm relative z-10">Premium Hızlı Okuma Kampı</p>
+            
+            <p class="text-lg text-slate-300 mb-2 relative z-10 font-medium">Bu sertifika,</p>
+            <h2 id="cert-fullname" class="text-5xl font-black text-white mb-4 relative z-10 drop-shadow-lg uppercase tracking-wide">İSİM SOYİSİM</h2>
+            <p class="text-lg text-slate-300 mb-8 max-w-xl mx-auto relative z-10 leading-relaxed">adlı katılımcının BeeReady 50 Seviyelik Bilişsel Hızlı Okuma ve Anlama Programı'nda üstün gayret göstererek <strong><span id="cert-level-display" class="text-bee text-xl font-bold">Seviye X</span></strong>'e ulaştığını belgelemektedir.</p>
+            
+            <div class="flex justify-around w-full mt-6 border-t border-white/20 pt-8 relative z-10">
+                <div class="text-center">
+                    <div class="text-3xl font-black text-white" id="cert-wpm">0 WPM</div>
+                    <div class="text-xs text-slate-400 uppercase tracking-widest mt-1">Maksimum Hız</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-black text-white" id="cert-comp">%0</div>
+                    <div class="text-xs text-slate-400 uppercase tracking-widest mt-1">Anlama Oranı</div>
+                </div>
+            </div>
+            
+            <p class="absolute bottom-6 left-0 right-0 text-[10px] text-slate-500 tracking-wider">
+                Bu içerik Öğr. Gör. SİMGE SOYDAN danışmanlığı ile Görsel İletişim Tasarımı Uzmanı Semanur Ayyıldız tarafından geliştirilmiştir.
+            </p>
+        </div>
+    </div>
+
     <script>
-        // --- DATA & CONTENT (Passages & Questions) ---
-        const textPool = [
+        // --- DATA & CONTENT (10 Unique High-Quality Topics) ---
+        const richTextPool = [
             {
-                type: 'Basic', topic: 'Odaklanma ve Zihin',
-                text: "Dikkat, modern çağın en değerli para birimidir. Sürekli uyarıcılarla çevrili olduğumuz bu dünyada, derin odaklanma yeteneği nadir ve güçlü bir beceri haline gelmiştir. Okuma, beynin bu odak kasını en iyi çalıştıran antrenmanlardan biridir. Gözlerimiz satırlar üzerinde kayarken, zihnimiz dış dünyadan soyutlanır ve yazarın düşünce evrenine girer. Ancak hızlı okumak, sadece gözleri hızlı hareket ettirmek değildir; aynı zamanda görsel algıyı ve kavramsal eşleştirmeyi hızlandırmaktır. Kelimeleri tek tek seslendirmek yerine, onları resimler gibi bütünsel algılamaya başladığımızda gerçek okuma hızı ortaya çıkar. Bu süreç nöroplastisite sayesinde pratikle gelişir.",
+                type: 'Bilim', topic: 'Nöroplastisite ve Zihin',
+                text: "Beynimiz, yaşam boyu değişme ve yeniden yapılanma yeteneğine sahiptir; bu olağanüstü özelliğe nöroplastisite denir. Eskiden bilim insanları, yetişkinlikten sonra beyin yapısının sabitlendiğine inanırdı. Ancak modern nörobilim, her yeni deneyimin, öğrenilen her yeni bilginin ve hatta sık tekrar edilen düşüncelerin bile beyindeki sinir ağlarını (nöronları) fiziksel olarak yeniden şekillendirdiğini kanıtlamıştır. Hızlı okuma gibi yeni bir beceri öğrenirken, başlangıçta beyniniz direnç gösterebilir ve yorulabilir. Çünkü henüz bu hızlı veri akışını işleyecek otoyollar inşa edilmemiştir. Ancak pratik yapmaya devam ettikçe, beyin görsel veriyi sese çevirmek (iç seslendirme) yerine doğrudan anlama çeviren yeni ve çok daha hızlı nöral yollar kurar. Kısacası, zihniniz sınırlarını sizin ona verdiğiniz antrenmanlarla belirler.",
                 questions: [
-                    { type: 'Ana Fikir', q: "Metnin ana fikri nedir?", opts: ["Modern dünyada odaklanma zorlaşmıştır", "Hızlı okuma görsel algıyı hızlandırmakla mümkündür", "Kitap okumak eğlencelidir", "Göz egzersizleri gözü yorar"], ans: 1 },
-                    { type: 'Detay', q: "Metne göre gerçek okuma hızı nasıl ortaya çıkar?", opts: ["Kelimeleri yüksek sesle okuyarak", "Sadece başlıkları okuyarak", "Kelimeleri bütünsel resimler gibi algılayarak", "Gözleri kapatarak"], ans: 2 },
-                    { type: 'Çıkarım', q: "Bu metinden hareketle aşağıdakilerden hangisi söylenemez?", opts: ["Derin odaklanma geliştirilebilir bir beceridir", "İç seslendirme okuma hızını artırır", "Okuma beyin için bir antrenmandır", "Modern çağda dikkat değerlidir"], ans: 1 },
-                    { type: 'Kelime', q: "Metindeki 'nöroplastisite' kavramı bağlama göre neyi ifade eder?", opts: ["Beynin pratikle değişip gelişebilme yeteneğini", "Göz kaslarının esnekliğini", "Kelimelerin kökenini", "Kitapların kağıt kalitesini"], ans: 0 },
-                    { type: 'Amaç', q: "Yazarın bu metni yazma amacı nedir?", opts: ["Hızlı okumanın mekanizmasını ve odaklanmanın önemini açıklamak", "Göz hastalıkları hakkında bilgi vermek", "Teknolojinin zararlarını anlatmak", "Roman okumayı teşvik etmek"], ans: 0 }
+                    { type: 'Ana Fikir', q: "Metnin asıl anlatmak istediği nedir?", opts: ["Yetişkinlikten sonra beyin gelişimi durur.", "Beyin, deneyimler ve pratiklerle fiziksel olarak sürekli yeniden şekillenir.", "Hızlı okuma beyni çok yorar ve zararlıdır.", "Sinir ağları sadece çocuklukta oluşur."], ans: 1 },
+                    { type: 'Detay', q: "Hızlı okuma öğrenirken beynin başlangıçta direnç göstermesinin nedeni nedir?", opts: ["Gözlerin çabuk yorulması", "İç seslendirmenin tamamen yok olması", "Hızlı veri akışını işleyecek nöral yolların henüz inşa edilmemiş olması", "Kitapların sıkıcı olması"], ans: 2 },
+                    { type: 'Çıkarım', q: "Nöroplastisite kavramından yola çıkarak aşağıdakilerden hangisi söylenebilir?", opts: ["Zeka seviyesi doğuştan sabittir ve değiştirilemez.", "Sürekli olumsuz düşünmek de beynin yapısını olumsuz yönde şekillendirebilir.", "Sadece fiziksel egzersiz beyni geliştirir.", "Beyin hücreleri asla yenilenmez."], ans: 1 },
+                    { type: 'Kelime', q: "Metindeki 'iç seslendirme' kavramı neyi ifade eder?", opts: ["Kişinin kendi kendine konuşması", "Okunan kelimeleri zihinden sese dönüştürme alışkanlığı", "Okurken müzik dinleme isteği", "Yüksek sesle kitap okuma eylemi"], ans: 1 }
                 ]
             },
             {
-                type: 'ALES', topic: 'Felsefe ve Bilim',
-                text: "Bilimsel devrimler, eski paradigmaların yıkılıp yenilerinin inşa edildiği kriz dönemleridir. Thomas Kuhn'a göre bilim, sürekli ve doğrusal bir birikimle ilerlemez; aksine sıçramalarla gelişir. Bir teori, karşılaştığı anormallikleri açıklayamadığında kriz başlar. Bu kriz, ancak olayları açıklayabilen yeni bir teorinin, yani yeni bir paradigmanın kabul edilmesiyle çözülür. Örneğin, Batlamyus'un yer merkezli evren modelinden Kopernik'in güneş merkezli modeline geçiş böyle bir sıçramadır. Ancak yeni bir paradigmanın kabulü sadece bilimsel kanıtlara değil, aynı zamanda bilim camiasının sosyolojik ve psikolojik dinamiklerine de bağlıdır. Bilim insanları eski alışkanlıklarından kolay vazgeçmezler.",
+                type: 'Fizik', topic: 'Kuantum Dünyası',
+                text: "Klasik fizik dünyamızı mükemmel bir şekilde açıklar; elmaların ağaçtan nasıl düştüğünü veya gezegenlerin güneş etrafında nasıl döndüğünü Newton kanunlarıyla hesaplayabiliriz. Ancak maddenin en küçük yapı taşlarına, yani atom altı parçacıklara indiğimizde kurallar aniden değişir. Kuantum mekaniği, olasılıkların ve belirsizliklerin hüküm sürdüğü tuhaf bir evrendir. Örneğin, bir elektron aynı anda iki farklı yerde olabilir (süperpozisyon) veya aralarında ışık yılları mesafe olsa bile iki parçacık anında birbirini etkileyebilir (kuantum dolanıklığı). Einstein bu durumu 'uzaktan ürkütücü eylem' olarak adlandırmış ve kuantum teorisinin eksik olduğunu düşünmüştür. Yine de bugün kullandığımız bilgisayarlar, lazerler ve MR cihazları tamamen kuantum fiziğinin bu 'tuhaf' ilkeleri sayesinde çalışmaktadır.",
                 questions: [
-                    { type: 'Ana Fikir', q: "Kuhn'a göre bilimsel ilerlemenin doğası nasıldır?", opts: ["Sürekli ve doğrusal bir birikimdir", "Sadece rastlantılara bağlıdır", "Krizler ve paradigma sıçramalarıyla gerçekleşir", "Sosyolojiden tamamen bağımsızdır"], ans: 2 },
-                    { type: 'Detay', q: "Bilimsel bir teori ne zaman krize girer?", opts: ["Çok fazla destekçisi olduğunda", "Anormallikleri açıklayamadığında", "Yeni bir kitap yayınlandığında", "Kanıtlar çok güçlü olduğunda"], ans: 1 },
-                    { type: 'Çıkarım', q: "Metne göre paradigma değişimi için hangisi gereklidir?", opts: ["Sadece matematiksel ispatlar", "Eski teorinin geliştirilmesi", "Hem kanıtlar hem de sosyolojik kabul", "Bilim insanlarının yaşlanması"], ans: 2 },
-                    { type: 'Başlık', q: "Bu paragrafa en uygun başlık hangisi olabilir?", opts: ["Batlamyus'un Hataları", "Bilimsel Devrimlerin Yapısı", "Güneş Merkezli Evren", "Psikolojinin Bilime Etkisi"], ans: 1 },
-                    { type: 'Kelime', q: "Metindeki 'paradigma' kelimesi yerine hangisi getirilebilir?", opts: ["Varsayım", "Algısal Çerçeve/Model", "Deney", "Formül"], ans: 1 }
+                    { type: 'Karşılaştırma', q: "Klasik fizik ile kuantum mekaniği arasındaki temel fark nedir?", opts: ["Klasik fizik atomları, kuantum gezegenleri inceler.", "Klasik fizik kesin kurallara, kuantum mekaniği olasılık ve belirsizliklere dayanır.", "İkisi de aynı kurallara sahiptir.", "Kuantum mekaniği sadece teoriktir."], ans: 1 },
+                    { type: 'Detay', q: "Metne göre bir elektronun aynı anda iki yerde olabilme durumuna ne ad verilir?", opts: ["Süperpozisyon", "Kuantum Dolanıklığı", "Newton Kanunu", "Görelilik"], ans: 0 },
+                    { type: 'Çıkarım', q: "Metinden hareketle Einstein'ın kuantum teorisine yaklaşımı nasıldı?", opts: ["Tamamen inanıyordu ve destekliyordu.", "Kuralların tuhaflığını kabul etmekte zorlanmış ve teoriyi eksik bulmuştur.", "Kuantum teorisini kendisi icat etmiştir.", "Klasik fiziği reddetmiştir."], ans: 1 },
+                    { type: 'Uygulama', q: "Aşağıdakilerden hangisi kuantum fiziği sayesinde geliştirilen teknolojilerden biri değildir?", opts: ["MR cihazları", "Lazerler", "Buharlı makineler", "Bilgisayarlar"], ans: 2 }
                 ]
             },
             {
-                type: 'YDS', topic: 'Technology & Society',
-                text: "The integration of artificial intelligence into healthcare has the potential to revolutionize patient outcomes. Machine learning algorithms can analyze vast amounts of medical data much faster than human practitioners, identifying patterns that might go unnoticed. For instance, AI-driven diagnostic tools have shown remarkable accuracy in detecting early signs of diseases like cancer from radiological images. However, the adoption of such technologies is not without challenges. Issues concerning data privacy, the potential for algorithmic bias, and the ethical implications of machine-led decision-making continue to spark intense debate among medical professionals and policymakers.",
+                type: 'Felsefe', topic: 'Stoacılık ve Kontrol',
+                text: "Antik Yunan ve Roma'da yeşeren Stoacılık felsefesinin kalbinde çok basit ama dönüştürücü bir ilke yatar: Hayatta kontrol edebildiğimiz şeyler ve kontrol edemediğimiz şeyler vardır. Hava durumu, diğer insanların bizim hakkımızdaki düşünceleri, geçmişte yaşananlar veya başımıza gelen talihsiz olaylar kontrolümüz dışındadır. Stoacılara göre, acı ve hayal kırıklığının temel nedeni, enerjimizi bu kontrol edemediğimiz dışsal faktörlere harcamamızdır. Öte yandan, inançlarımız, tepkilerimiz, değerlerimiz ve eylemlerimiz tamamen bizim kontrolümüzdedir. Epiktetos'un dediği gibi, 'Bizi rahatsız eden olayların kendisi değil, o olaylara yüklediğimiz anlamlardır.' Gerçek iç huzuru, sadece kendi zihnimize ve tepkilerimize odaklandığımızda bulabiliriz.",
                 questions: [
-                    { type: 'Main Idea', q: "What is the main focus of the passage?", opts: ["The history of medical imaging", "The benefits and challenges of AI in healthcare", "How to write machine learning algorithms", "The cost of healthcare policies"], ans: 1 },
-                    { type: 'Detail', q: "According to the passage, what is one advantage of machine learning algorithms?", opts: ["They are cheaper than doctors", "They can analyze medical data faster than humans", "They never make mistakes", "They do not need data to operate"], ans: 1 },
-                    { type: 'Inference', q: "It can be inferred from the passage that...", opts: ["AI will completely replace human doctors soon", "Medical professionals fully agree on using AI", "There are still unresolved concerns regarding AI use in medicine", "Algorithmic bias only affects cancer diagnosis"], ans: 2 },
-                    { type: 'Vocabulary', q: "The word 'revolutionize' in the text is closest in meaning to:", opts: ["Destroy completely", "Maintain the status quo", "Change fundamentally", "Increase slowly"], ans: 2 },
-                    { type: 'Purpose', q: "Why does the author mention 'detecting early signs of diseases like cancer'?", opts: ["To give an example of AI's beneficial capabilities", "To scare patients about cancer", "To criticize radiological images", "To prove that doctors are incompetent"], ans: 0 }
+                    { type: 'Ana Fikir', q: "Stoacılık felsefesinin temel prensibi nedir?", opts: ["Hayatın anlamı acı çekmektir.", "Sadece kontrol edebildiğimiz şeylere (kendi tepkilerimize) odaklanmalıyız.", "Geleceği tahmin etmek mümkündür.", "Başkalarının ne düşündüğü her şeyden önemlidir."], ans: 1 },
+                    { type: 'Detay', q: "Stoacılara göre acı çekmenin temel nedeni nedir?", opts: ["Fiziksel hastalıklar", "Kontrol edemediğimiz dış faktörlere enerji harcamak", "Yeterince zengin olmamak", "Geçmişi hatırlamamak"], ans: 1 },
+                    { type: 'Çıkarım', q: "Epiktetos'un sözünden yola çıkarak nasıl bir sonuç çıkarılabilir?", opts: ["Olayların objektif bir kötülüğü yoktur, kötülük bizim yorumumuzdadır.", "Her olay doğası gereği kötüdür.", "İnsanlar olayları değiştirebilir.", "Duygularımızı tamamen bastırmalıyız."], ans: 0 },
+                    { type: 'Sınıflandırma', q: "Stoacılığa göre aşağıdakilerden hangisi kontrolümüzde olan bir şeydir?", opts: ["Hava durumu", "Geçmişteki hatalarımız", "Olaylara verdiğimiz tepkiler", "Diğer insanların davranışları"], ans: 2 }
                 ]
             },
             {
-                type: 'LGS', topic: 'Yeni Nesil Paragraf',
-                text: "Ormanlar, dünyanın akciğerleri olmanın ötesinde muazzam bir iletişim ağına sahiptir. Bilim insanları, ağaçların kökleri aracılığıyla birbirleriyle iletişim kurduklarını keşfetmiştir. 'Mikoriza' adı verilen mantar ağları sayesinde, büyük ve sağlıklı ağaçlar, gölgede kalmış fidanlara besin aktarabilir. Hatta bir ağaç zararlı böceklerin saldırısına uğradığında, bu ağ üzerinden kimyasal sinyaller göndererek diğer ağaçları uyarır. Uyarilan ağaçlar, yapraklarındaki toksik madde miktarını artırarak kendilerini savunmaya hazırlarlar. Bu durum, doğanın rekabetten ziyade, dayanışma ve iş birliği üzerine kurulu karmaşık bir sistem olduğunu bizlere göstermektedir.",
+                type: 'Teknoloji', topic: 'Yapay Zeka Devrimi',
+                text: "Yapay zeka (YZ), insan zekasını taklit eden algoritmalar bütünüdür ve insanlık tarihinin en büyük teknolojik sıçramalarından birini temsil etmektedir. Başlangıçta sadece satranç oynamak veya basit hesaplamalar yapmak için tasarlanan makineler, bugün derin öğrenme (deep learning) sayesinde milyarlarca veriyi analiz ederek kendi kendine öğrenebilmektedir. Tıpta hastalıkların erken teşhisi, otonom araçlarla ulaşım güvenliği veya diller arası anlık çeviri gibi devasa faydalar sunmaktadır. Ancak bu hızlı gelişim, veri gizliliği, algoritmik ön yargılar ve iş gücü piyasasındaki dönüşüm gibi etik ve sosyoekonomik sorunları da beraberinde getirmektedir. Uzmanlar, yapay zekanın insanlığı ele geçirmesinden ziyade, kötü amaçlı insanların YZ'yi kullanmasından endişe etmektedir. Teknolojinin yönünü, bizim ona koyduğumuz sınırlar belirleyecektir.",
                 questions: [
-                    { type: 'Ana Fikir', q: "Metinde asıl anlatılmak istenen nedir?", opts: ["Ormanlar dünyanın oksijen kaynağıdır", "Mantarlar ağaçlara zarar verir", "Doğa, rekabetten çok dayanışma ve iletişim üzerine kurulu bir sistemdir", "Böcekler orman ekosistemi için faydalıdır"], ans: 2 },
-                    { type: 'Detay', q: "Ağaçlar zararlı böcek saldırısını diğerlerine nasıl haber verir?", opts: ["Kuşlar aracılığıyla", "Yapraklarını dökerek", "Köklerindeki mantar ağı üzerinden kimyasal sinyallerle", "Rüzgarın yönünü değiştirerek"], ans: 2 },
-                    { type: 'Çıkarım', q: "Mikoriza ağları için hangisi söylenemez?", opts: ["Ağaçlar arası besin transferini sağlar", "Doğal bir tehlike uyarı sistemidir", "Sadece aynı tür ağaçlar arasında bulunur", "Ormanın sağlığını destekler"], ans: 2 },
-                    { type: 'Kelime', q: "Metindeki 'toksik' kelimesinin anlamdaşı nedir?", opts: ["Besleyici", "Zehirli", "Tatlı", "Şifalı"], ans: 1 },
-                    { type: 'Amaç', q: "Yazar bu metni hangi amaçla yazmıştır?", opts: ["Ağaçların bilinmeyen iletişim ve yardımlaşma ağını tanıtmak", "Mantarların nasıl tüketileceğini anlatmak", "Çevre kirliliğine dikkat çekmek", "Böcek ilaçlamasını teşvik etmek"], ans: 0 }
+                    { type: 'Amaç', q: "Metnin yazılış amacı nedir?", opts: ["Yapay zekanın sadece zararlarını anlatmak", "Yapay zekanın gelişimini, faydalarını ve getirdiği zorlukları özetlemek", "Satranç oynayan makineleri tanıtmak", "İnsan zekasının yapay zekadan üstün olduğunu kanıtlamak"], ans: 1 },
+                    { type: 'Detay', q: "Makinelerin kendi kendine öğrenmesini sağlayan teknoloji metinde nasıl adlandırılmıştır?", opts: ["Otonom araçlar", "Derin öğrenme (Deep learning)", "Algoritmik ön yargı", "Veri gizliliği"], ans: 1 },
+                    { type: 'Çıkarım', q: "Uzmanların yapay zeka konusundaki asıl endişesi nedir?", opts: ["Makinelerin dünyayı ele geçirmesi", "İnsanların YZ'yi kötü amaçlar için kullanma potansiyeli", "İnternetin çökmesi", "Makinelerin satrançta insanları yenmesi"], ans: 1 },
+                    { type: 'Kelime', q: "Metindeki 'otonom' kelimesi ne anlama gelmektedir?", opts: ["Kendi kendini yönetebilen, sürücüsüz", "Çok hızlı çalışan", "Pahalı olan", "Sadece elektrikle çalışan"], ans: 0 }
                 ]
-            }
+            },
+            {
+                type: 'Biyoloji', topic: 'Gizli Ekosistem: Mikrobiyom',
+                text: "İnsan vücudu sadece insan hücrelerinden oluşmaz; derimizde, ağzımızda ve özellikle bağırsaklarımızda trilyonlarca bakteri, virüs ve mantar yaşar. Bu devasa mikroorganizma topluluğuna 'insan mikrobiyomu' denir. Mikrobiyomumuz parmak izimiz kadar eşsizdir ve sağlığımız üzerinde inanılmaz bir etkiye sahiptir. Bağırsak bakterileri, sadece yiyecekleri sindirmemize yardımcı olmakla kalmaz, aynı zamanda bağışıklık sistemimizi eğitir ve hatta beyin fonksiyonlarımızı etkileyen nörotransmitterler (serotonin gibi) üretir. Aşırı antibiyotik kullanımı, işlenmiş gıdalar ve stres, bu hassas ekosistemi bozarak obezite, alerjiler ve depresyon gibi çeşitli hastalıklara yol açabilir. Bizler aslında yalnız yürüyen bireyler değil, karmaşık ve iç içe geçmiş birer ekosistemiz.",
+                questions: [
+                    { type: 'Ana Fikir', q: "Metne göre insan vücuduna dair en çarpıcı gerçek nedir?", opts: ["Sadece insan hücrelerinden oluşması", "Hastalıkların tek nedeninin genetik olması", "Trilyonlarca mikroorganizma barındıran kompleks bir ekosistem olması", "Antibiyotiklerin her derde deva olması"], ans: 2 },
+                    { type: 'Detay', q: "Bağırsak bakterilerinin görevlerinden biri metinde ne olarak belirtilmiştir?", opts: ["Kan pompalamak", "Beyin fonksiyonlarını etkileyen kimyasallar (serotonin vb.) üretmek", "Sadece su emilimini sağlamak", "Oksijen taşımak"], ans: 1 },
+                    { type: 'Neden-Sonuç', q: "Mikrobiyom ekosisteminin bozulması aşağıdakilerden hangisine yol açabilir?", opts: ["Daha hızlı koşmaya", "Zekanın artmasına", "Obezite, alerji ve depresyon gibi hastalıklara", "Saç dökülmesinin durmasına"], ans: 2 },
+                    { type: 'Çıkarım', q: "Yazarın 'Bizler aslında yalnız yürüyen bireyler değiliz' sözüyle anlatmak istediği nedir?", opts: ["Sürekli kalabalık ortamlarda yaşamalıyız.", "İçimizde bizimle birlikte yaşayan ve sağlığımızı etkileyen devasa bir mikrobiyolojik yaşam vardır.", "İnsan sosyal bir varlıktır.", "Yürüyüş yapmak sağlığa faydalıdır."], ans: 1 }
+                ]
+            },
+            // Adding 5 more short ones to complete the pool of 10
+            { type: 'Tarih', topic: 'Yazının İcadı', text: "Yazının icadı, insanlık tarihinin en büyük devrimidir. Sümerler tarafından M.Ö. 3200 civarında Mezopotamya'da geliştirilen çivi yazısı, başlangıçta şiir yazmak veya felsefe yapmak için değil, ticari kayıtları, tahıl depolarını ve vergileri tutmak için muhasebe amacıyla icat edilmiştir. Ancak bu basit muhasebe aracı, zamanla hikayelerin, kanunların ve nesiller arası bilgi aktarımının en güçlü silahına dönüşmüştür.", questions: [{type:'Detay', q:'Yazı ilk olarak hangi amaçla icat edilmiştir?', opts:['Şiir yazmak','Ticari ve muhasebe kayıtları tutmak','Dini törenler','Savaş stratejileri'], ans:1}, {type:'Ana Fikir', q:'Metnin ana fikri nedir?', opts:['Sümerler ticarette başarısızdı','Yazı pratik bir ihtiyaçtan doğup insanlığı dönüştürmüştür','Çivi yazısı çok zordur'], ans:1}] },
+            { type: 'Uzay', topic: 'Mars ve Kolonizasyon', text: "Mars, ince atmosferi, aşırı soğuk iklimi ve kozmik radyasyon bombardımanı ile Dünya'ya kıyasla son derece düşmanca bir gezegendir. Ancak yine de insanlığın 'B Gezegeni' olma konusunda en güçlü adaydır. Mars'ta eskiden sıvı suyun bulunduğuna dair nehir yatakları ve kurumuş göller tespit edilmiştir. Eğer insanlık çok gezegenli bir tür olmak istiyorsa, ilk adım kızıl gezegenin zorlu koşullarını teknoloji ile evcilleştirmek olacaktır.", questions: [{type:'Detay', q:'Mars gezegeninin insan yaşamı için zorlu olmasının nedenlerinden biri değildir?', opts:['Kozmik radyasyon','İnce atmosfer','Aşırı sıcaklık','Aşırı soğuk'], ans:2}, {type:'Çıkarım', q:'Mars neden B Gezegeni olarak görülüyor?', opts:['Dünya ile aynı olduğu için','Zorluklarına rağmen diğer gezegenlere kıyasla en güçlü aday olduğu için','Üzerinde uzaylılar yaşadığı için'], ans:1}] },
+            { type: 'Ekonomi', topic: 'Davranışsal İktisat', text: "Klasik iktisat teorisi, insanların her zaman rasyonel (akılcı) kararlar verdiğini ve kendi çıkarlarını maksimize ettiğini varsayar. Ancak Davranışsal Ekonomi, bu varsayımı yıkar. İnsanlar genellikle duygularıyla, sürü psikolojisiyle veya bilişsel ön yargılarla hareket ederler. Örneğin, bir ürünü 100 TL yerine 99 TL'ye satmak (sol basamak etkisi) veya indirim algısı yaratmak insanların mantığını kolayca devre dışı bırakabilir.", questions: [{type:'Karşılaştırma', q:'Davranışsal ekonomi klasik iktisattan hangi yönüyle ayrılır?', opts:['İnsanların rasyonel olmadığını savunmasıyla','Sadece parayla ilgilenmesiyle','Daha eski olmasıyla'], ans:0}, {type:'Detay', q:'Ürünlerin 99 TL olmasının sebebi nedir?', opts:['Matematiksel hata','Sol basamak etkisiyle mantığı devre dışı bırakmak','Para üstü vermenin kolaylığı'], ans:1}] },
+            { type: 'Sanat', topic: 'Rönesans ve İnsan', text: "Rönesans (Yeniden Doğuş), Orta Çağ'ın dogmatik ve baskıcı düşünce yapısından çıkarak Antik Yunan ve Roma'nın akılcı ideallerine dönüşü temsil eder. Bu dönemde sanat, sadece dini hikayeleri anlatmak için değil, insanın güzelliğini, anatomisini ve doğayı gerçekçi bir şekilde resmetmek için kullanılmaya başlandı. Da Vinci ve Michelangelo gibi dâhiler, sanatı bilimle birleştirerek insanı evrenin merkezine (Hümanizm) yerleştirdiler.", questions: [{type:'Kavram', q:'Rönesans kelimesi ne anlama gelir?', opts:['Karanlık','Yeniden Doğuş','Bilim Çağı'], ans:1}, {type:'Ana Fikir', q:'Rönesans sanatının en büyük özelliği nedir?', opts:['Sadece dini hikayeleri işlemesi','İnsanı ve doğayı gerçekçi/bilimsel resmetmesi','Sadece heykeltıraşlık olması'], ans:1}] },
+            { type: 'Enerji', topic: 'Füzyon Enerjisi', text: "Güneş'in ve diğer yıldızların enerji kaynağı olan Nükleer Füzyon, atom çekirdeklerinin birleşerek muazzam bir enerji açığa çıkarmasıdır. Günümüzdeki nükleer santraller fisyon (parçalanma) ile çalışır ve tehlikeli atıklar üretir. Füzyon ise temiz, güvenli ve neredeyse sınırsız bir enerji vaat eder. Eğer bilim insanları dünyada minyatür bir güneş yaratıp bu reaksiyonu stabil tutmayı başarırlarsa, insanlığın enerji krizi sonsuza dek çözülmüş olacaktır.", questions: [{type:'Fark', q:'Güneşin enerji kaynağı (Füzyon) ile günümüz santralleri (Fisyon) arasındaki fark nedir?', opts:['Füzyon parçalanma, Fisyon birleşmedir','Füzyon birleşmedir ve temizdir, Fisyon parçalanmadır ve atık üretir','İkisi de aynıdır'], ans:1}, {type:'Çıkarım', q:'Füzyon enerjisinin başarılması neye yol açacaktır?', opts:['Enerji krizinin çözülmesine','Dünyanın patlamasına','Güneşin sönmesine'], ans:0}] }
         ];
 
-        // --- ALGORITHM: Generate 50 Days ---
+        // --- STREAMING_CHUNK:Curriculum Generation Algorithm (50 Levels) ---
         function generateCurriculum() {
             let curriculum = [];
             let wpmBase = 200;
             
             for (let i = 1; i <= 50; i++) {
-                // Determine Day Type
-                let tType = 'Basic';
-                if (i >= 15 && i % 4 === 0) tType = 'ALES';
-                else if (i >= 20 && i % 5 === 0) tType = 'YDS';
-                else if (i >= 10 && i % 3 === 0) tType = 'LGS';
-
-                const pool = textPool.find(t => t.type === tType) || textPool[0];
+                // Cycle through the 10 rich topics
+                const poolIndex = (i - 1) % richTextPool.length;
+                const pool = richTextPool[poolIndex];
                 
-                // Gradual WPM increase
-                const dayWpm = Math.min(wpmBase + (i * 8), 700);
+                // Gradual WPM and chunk increase
+                const levelWpm = Math.min(wpmBase + (i * 12), 800);
+                
+                // Determine Mode focus
+                let modeType = 'Akademik';
+                if (i % 5 === 0) modeType = 'Test Odaklı';
+                if (i > 40) modeType = 'İleri Simülasyon';
 
                 curriculum.push({
-                    day: i,
-                    type: tType,
+                    level: i,
+                    type: modeType,
                     topic: pool.topic,
-                    wpm: dayWpm,
+                    wpm: levelWpm,
                     text: pool.text,
                     questions: pool.questions
                 });
@@ -433,31 +547,94 @@
         }
         const CURRICULUM = generateCurriculum();
 
-        // --- STATE MANAGEMENT ---
-        const STORAGE_KEY = 'beeready_app_v3';
+        // --- STREAMING_CHUNK:State Management and Audio/Haptic Utilities ---
+        const STORAGE_KEY = 'beeready_premium_v4';
         
+        const ui = {
+            audioCtx: null,
+            initAudio() {
+                if (!this.audioCtx) {
+                    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
+            },
+            playTone(freq, type, duration, vol) {
+                if(!this.audioCtx) return;
+                const osc = this.audioCtx.createOscillator();
+                const gain = this.audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, this.audioCtx.currentTime);
+                gain.gain.setValueAtTime(vol, this.audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(this.audioCtx.destination);
+                osc.start();
+                osc.stop(this.audioCtx.currentTime + duration);
+            },
+            vibrate(pattern) {
+                if (navigator.vibrate) { try { navigator.vibrate(pattern); } catch(e) {} }
+            },
+            interact() {
+                this.initAudio();
+                this.playTone(600, 'sine', 0.1, 0.05);
+                this.vibrate(10);
+            },
+            tick() {
+                this.initAudio();
+                this.playTone(800, 'triangle', 0.05, 0.02);
+            },
+            success() {
+                this.initAudio();
+                this.playTone(400, 'sine', 0.1, 0.1);
+                setTimeout(() => this.playTone(600, 'sine', 0.2, 0.1), 100);
+                setTimeout(() => this.playTone(1000, 'sine', 0.4, 0.1), 200);
+                this.vibrate([30, 50, 30, 50, 50]);
+            },
+            fail() {
+                this.initAudio();
+                this.playTone(300, 'sawtooth', 0.3, 0.1);
+                setTimeout(() => this.playTone(200, 'sawtooth', 0.4, 0.1), 200);
+                this.vibrate([100, 50, 100]);
+            },
+            toast(msg) {
+                const div = document.createElement('div');
+                div.className = 'fixed top-10 left-1/2 transform -translate-x-1/2 bg-bee text-dark font-bold px-6 py-3 rounded-full shadow-glow z-50 transition-all opacity-0 text-center w-[90%] max-w-sm';
+                div.innerText = msg;
+                document.body.appendChild(div);
+                setTimeout(() => div.classList.replace('opacity-0', 'opacity-100'), 10);
+                setTimeout(() => {
+                    div.classList.replace('opacity-100', 'opacity-0');
+                    setTimeout(() => div.remove(), 300);
+                }, 3500);
+            }
+        };
+
+        const congratsMessages = [
+            "Arı gibi uçtun! Beyin nöronların halay çekiyor! 🐝",
+            "Muazzam odak! Flaş bile senin hızına yetişemez! ⚡",
+            "Şahin gözler! Kelimeleri havada yakaladın! 🦅",
+            "Zihin bükücü! Okuma yeteneğin evrim geçiriyor! 🧠",
+            "Harika ötesi! Akademik makaleler senden korksun! 📚"
+        ];
+
         const appState = {
-            user: null, // { name, day, xp, level, stats: { compSum, compCount, bestWpm } }
+            user: null, // { name, levelProgress, xp, rank, stats: { compSum, compCount, bestWpm } }
             currentScreen: '',
         };
 
         const sessionState = {
-            dayObj: null,
-            stageIndex: 0, // 0: Eye, 1: Word, 2: Sentence, 3: Paragraph, 4: Quiz
+            levelObj: null,
+            stageIndex: 0, 
             isPlaying: false,
             timer: null,
             animFrame: null,
-            
-            // Reading engine specifics
             chunks: [],
             chunkIdx: 0,
             wpm: 200,
-            
-            // Stats for the day
             quizAnswers: {},
         };
 
-        // --- CORE LOGIC ---
+        // --- STREAMING_CHUNK:Core App Logic & Navigation ---
         const app = {
             init() {
                 const saved = localStorage.getItem(STORAGE_KEY);
@@ -469,36 +646,27 @@
                     this.navigate('onboarding');
                 }
             },
-            
             save() {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(appState.user));
                 this.updateHeader();
             },
-            
             navigate(screenId) {
                 appState.currentScreen = screenId;
-                
-                // Hide all
                 document.querySelectorAll('.screen').forEach(s => {
                     s.classList.remove('active');
-                    setTimeout(() => { if(!s.classList.contains('active')) s.style.display = 'none'; }, 300);
+                    setTimeout(() => { if(!s.classList.contains('active')) s.style.display = 'none'; }, 400);
                 });
                 
-                // Show target
                 setTimeout(() => {
                     const el = document.getElementById(screenId + '-screen');
                     if (el) {
                         el.style.display = 'flex';
-                        // Force reflow
                         void el.offsetWidth;
                         el.classList.add('active');
-                        
-                        // Screen specific actions
                         if(screenId === 'dashboard') dashboard.render();
                     }
-                }, 300);
+                }, 400);
             },
-            
             updateHeader() {
                 const u = appState.user;
                 if (!u) return;
@@ -506,21 +674,26 @@
                 document.getElementById('header-profile').classList.add('flex');
                 document.getElementById('header-name').innerText = u.name;
                 document.getElementById('header-xp').innerText = u.xp + ' XP';
-                document.getElementById('header-level').innerText = 'Lvl ' + u.level;
+                document.getElementById('header-level').innerText = u.rank;
             }
         };
 
-        // --- ONBOARDING ---
         const onboarding = {
             start() {
+                ui.interact();
                 const name = document.getElementById('ob-name').value.trim();
-                if (!name) return; // Could add validation animation
+                const surname = document.getElementById('ob-surname').value.trim();
+                if (!name || !surname) {
+                    ui.toast("Lütfen adınızı ve soyadınızı eksiksiz giriniz.");
+                    return; 
+                }
                 
                 appState.user = {
                     name: name,
-                    day: 1,
+                    surname: surname,
+                    levelProgress: 1, 
                     xp: 0,
-                    level: 1,
+                    rank: 1,
                     stats: { compSum: 0, compCount: 0, bestWpm: 0 }
                 };
                 app.save();
@@ -528,67 +701,66 @@
             }
         };
 
-        // --- DASHBOARD ---
+        // --- STREAMING_CHUNK:Dashboard & Map Rendering ---
         const dashboard = {
             render() {
                 const u = appState.user;
-                document.getElementById('dash-name').innerText = u.name;
+                document.getElementById('dash-name').innerText = `${u.name} ${u.surname || ''}`;
                 
-                // Calculate progress
-                const progressPct = ((u.day - 1) / 50) * 100;
+                const progressPct = ((u.levelProgress - 1) / 50) * 100;
                 document.getElementById('dash-progress').innerText = `%${Math.round(progressPct)}`;
                 document.getElementById('dash-bar').style.width = `${progressPct}%`;
                 
-                // Stats
                 const avgComp = u.stats.compCount > 0 ? Math.round(u.stats.compSum / u.stats.compCount) : 0;
                 document.getElementById('dash-comp').innerText = `%${avgComp}`;
                 document.getElementById('dash-wpm').innerText = u.stats.bestWpm;
 
-                // Render Roadmap
                 const container = document.getElementById('roadmap-container');
                 container.innerHTML = '';
                 
-                CURRICULUM.forEach(dayData => {
-                    const isCompleted = dayData.day < u.day;
-                    const isActive = dayData.day === u.day;
-                    const isLocked = dayData.day > u.day;
+                CURRICULUM.forEach(levelData => {
+                    const isCompleted = levelData.level < u.levelProgress;
+                    const isActive = levelData.level === u.levelProgress;
+                    const isLocked = levelData.level > u.levelProgress;
                     
-                    let classes = "day-node relative w-full md:w-[85%] p-4 md:p-5 rounded-2xl border-2 glass-panel flex items-center gap-4 z-10 ";
-                    classes += (dayData.day % 2 === 0) ? "md:ml-auto " : "md:mr-auto ";
+                    let classes = "day-node relative w-full md:w-[85%] p-4 sm:p-5 md:p-6 rounded-[1.5rem] border-2 glass-card flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-4 z-10 ";
+                    classes += (levelData.level % 2 === 0) ? "md:ml-auto " : "md:mr-auto ";
                     
                     let iconHtml = "";
                     if (isLocked) {
                         classes += "locked border-white/5";
-                        iconHtml = `<i class="ph-fill ph-lock-key text-2xl text-slate-500"></i>`;
+                        iconHtml = `<i class="ph-bold ph-lock-key text-xl md:text-2xl text-slate-500"></i>`;
                     } else if (isCompleted) {
-                        classes += "completed cursor-pointer hover:bg-green-500/10";
-                        iconHtml = `<i class="ph-bold ph-check text-2xl text-green-400"></i>`;
+                        classes += "completed hover:bg-green-500/10";
+                        iconHtml = `<i class="ph-bold ph-check text-xl md:text-2xl text-emerald-400"></i>`;
                     } else if (isActive) {
-                        classes += "active-node cursor-pointer";
-                        iconHtml = `<i class="ph-fill ph-play text-2xl text-navy"></i>`;
+                        classes += "active-node";
+                        iconHtml = `<i class="ph-fill ph-play text-xl md:text-2xl text-dark"></i>`;
                     }
-
-                    // Badge colors
-                    let badgeColor = "text-bee";
-                    if(dayData.type === 'ALES') badgeColor = "text-blue-400";
-                    if(dayData.type === 'YDS') badgeColor = "text-red-400";
-                    if(dayData.type === 'LGS') badgeColor = "text-green-400";
 
                     const node = document.createElement('div');
                     node.className = classes;
-                    if (!isLocked) node.onclick = () => lesson.open(dayData.day);
+                    if (!isLocked) {
+                        node.onclick = () => { ui.interact(); lesson.open(levelData.level); };
+                    }
                     
                     node.innerHTML = `
-                        <div class="w-12 h-12 rounded-full flex items-center justify-center shrink-0 border shadow-inner transition-all 
-                                    ${isActive ? 'bg-bee border-bee' : 'bg-black/50 border-white/10'}">
-                            ${iconHtml}
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-xs ${badgeColor} font-bold tracking-widest uppercase">Gün ${dayData.day}</span>
-                                <span class="text-xs text-slate-400 font-mono">${dayData.wpm} WPM</span>
+                        <div class="flex items-center gap-3 md:gap-4 w-full md:w-auto">
+                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 transition-all shadow-inner 
+                                        ${isActive ? 'bg-gradient-to-br from-bee to-beeDark border-none' : 'bg-dark/50 border border-white/10'}">
+                                ${iconHtml}
                             </div>
-                            <h3 class="font-bold text-white text-lg leading-tight">${isLocked ? 'Kilitli Aşama' : dayData.topic}</h3>
+                            <div class="flex-1 md:hidden">
+                                <span class="text-[10px] sm:text-xs text-bee font-bold tracking-widest uppercase">Seviye ${levelData.level}</span>
+                                <h3 class="font-black text-white text-base sm:text-lg leading-tight break-words pr-2">${isLocked ? 'Kilitli Aşama' : levelData.topic}</h3>
+                            </div>
+                        </div>
+                        <div class="hidden md:block flex-1 pl-2">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs text-bee font-bold tracking-widest uppercase">Seviye ${levelData.level} • ${levelData.type}</span>
+                                <span class="text-xs text-slate-400 font-mono bg-dark/50 px-2 py-1 rounded-md border border-white/5">${levelData.wpm} WPM</span>
+                            </div>
+                            <h3 class="font-black text-white text-xl leading-tight">${isLocked ? 'Kilitli Aşama' : levelData.topic}</h3>
                         </div>
                     `;
                     container.appendChild(node);
@@ -596,22 +768,21 @@
             }
         };
 
-        // --- LESSON INTRO ---
         const lesson = {
-            open(dayNum) {
-                const dayData = CURRICULUM.find(d => d.day === dayNum);
-                sessionState.dayObj = dayData;
+            open(levelNum) {
+                const levelData = CURRICULUM.find(d => d.level === levelNum);
+                sessionState.levelObj = levelData;
                 
-                document.getElementById('lesson-badge').innerText = dayData.type + ' Modu';
-                document.getElementById('lesson-title').innerText = `Gün ${dayData.day}: ${dayData.topic}`;
-                document.getElementById('lesson-desc').innerText = `Göz kaslarınızı ısıtarak başlayacak, ${dayData.wpm} WPM hedefine kadar aşamalı hızlanacak ve en sonunda okuduğunu anlama testiyle günü tamamlayacaksınız.`;
-                document.getElementById('lesson-wpm').innerText = dayData.wpm;
+                document.getElementById('lesson-badge').innerText = levelData.type;
+                document.getElementById('lesson-title').innerText = `Seviye ${levelData.level}: ${levelData.topic}`;
+                document.getElementById('lesson-desc').innerText = `Göz kaslarınızı ısıtarak başlayacak, ${levelData.wpm} WPM hedefine kadar aşamalı hızlanacak ve en sonunda okuduğunu anlama testiyle seviyeyi tamamlayacaksınız.`;
+                document.getElementById('lesson-wpm').innerText = levelData.wpm;
                 
                 app.navigate('lesson');
             }
         };
 
-        // --- READING ENGINE ---
+        // --- STREAMING_CHUNK:Reading Engine Core Logic ---
         const engine = {
             stages: [
                 { id: 'eye', name: 'Göz Kası', desc: 'Arıyı gözlerinle takip et' },
@@ -620,10 +791,12 @@
                 { id: 'paragraph', name: 'Paragraf Okuma', desc: 'Bağlamı yakala' }
             ],
 
-            startDay() {
+            startLevel() {
+                ui.interact();
                 sessionState.stageIndex = 0;
-                sessionState.wpm = sessionState.dayObj.wpm;
+                sessionState.wpm = sessionState.levelObj.wpm;
                 document.getElementById('wpm-slider').value = sessionState.wpm;
+                document.getElementById('slider-wpm-val').innerText = sessionState.wpm;
                 this.loadStage();
                 app.navigate('trainer');
             },
@@ -641,6 +814,7 @@
                 const display = document.getElementById('text-display');
                 const nextBtn = document.getElementById('btn-next-stage');
                 const playBtn = document.getElementById('btn-play');
+                const wpmControl = document.getElementById('wpm-control-container');
                 
                 target.style.display = 'none';
                 focus.classList.add('hidden');
@@ -648,37 +822,41 @@
                 nextBtn.classList.add('hidden');
                 playBtn.classList.remove('hidden');
                 
+                if(sIdx === 0) wpmControl.classList.add('invisible'); 
+                else wpmControl.classList.remove('invisible');
+                
                 sessionState.chunkIdx = 0;
                 document.getElementById('prog-bar').style.width = '0%';
                 document.getElementById('prog-current').innerText = '0';
                 
-                const rawText = sessionState.dayObj.text;
+                const rawText = sessionState.levelObj.text;
 
-                if (sIdx === 0) { // Eye Gym
+                if (sIdx === 0) { 
                     target.style.display = 'flex';
-                    display.innerHTML = `<div class="text-slate-500 font-medium">Sadece gözlerinle takip et. Başını oynatma.</div>`;
+                    display.innerHTML = `<div class="text-slate-400 font-semibold text-lg md:text-xl">Sadece gözlerinle takip et.<br><span class="text-xs md:text-sm font-normal text-slate-500">Başını oynatma.</span></div>`;
                     document.getElementById('prog-total').innerText = '15s';
                 } 
-                else if (sIdx === 1) { // Word
+                else if (sIdx === 1) { 
                     focus.classList.remove('hidden');
                     sessionState.chunks = rawText.trim().split(/\s+/).filter(w => w.length > 0);
                     document.getElementById('prog-total').innerText = sessionState.chunks.length;
                     this.renderWord();
                 }
-                else if (sIdx === 2) { // Sentence
+                else if (sIdx === 2) { 
                     sessionState.chunks = rawText.match(/[^.!?]+[.!?]+/g) || [rawText];
                     sessionState.chunks = sessionState.chunks.map(c => c.trim()).filter(c => c.length > 0);
                     document.getElementById('prog-total').innerText = sessionState.chunks.length;
                     this.renderSentence();
                 }
-                else if (sIdx === 3) { // Paragraph
-                    sessionState.chunks = [rawText]; // treat as single flow
+                else if (sIdx === 3) { 
+                    sessionState.chunks = [rawText]; 
                     document.getElementById('prog-total').innerText = '1';
                     this.renderParagraph();
                 }
             },
 
             togglePlay() {
+                ui.interact();
                 if (sessionState.isPlaying) this.pause();
                 else this.play();
             },
@@ -702,28 +880,31 @@
 
             finishStage() {
                 this.pause();
-                document.getElementById('btn-play').classList.add('hidden');
+                ui.playTone(500, 'triangle', 0.1, 0.05); 
+                ui.vibrate(20);
+                document.getElementById('btn-play').parentElement.classList.add('hidden');
                 document.getElementById('btn-next-stage').classList.remove('hidden');
                 document.getElementById('prog-bar').style.width = '100%';
             },
 
             nextStage() {
+                ui.interact();
+                document.getElementById('btn-play').parentElement.classList.remove('hidden');
                 sessionState.stageIndex++;
                 if (sessionState.stageIndex > 3) {
-                    quiz.init(); // Go to quiz
+                    quiz.init(); 
                 } else {
                     this.loadStage();
                 }
             },
 
-            // --- Eye Gym Logic ---
+            // --- STREAMING_CHUNK:Eye Gym & RSVP Readers ---
             runEyeGym() {
                 const target = document.getElementById('eye-gym-target');
                 const container = target.parentElement;
-                const duration = 15000; // 15 seconds
+                const duration = 15000; 
                 const start = performance.now();
-                
-                const animType = sessionState.dayObj.day % 5; // 0: infinity, 1: horizontal, 2: vertical, 3: diagonal, 4: circle
+                const animType = sessionState.levelObj.level % 5; 
 
                 const animate = (now) => {
                     if (!sessionState.isPlaying) return;
@@ -734,37 +915,20 @@
                         return;
                     }
 
-                    // Progress update
                     document.getElementById('prog-current').innerText = Math.floor(elapsed/1000) + 's';
                     document.getElementById('prog-bar').style.width = `${(elapsed/duration)*100}%`;
 
                     const w = container.clientWidth / 2 - 40;
                     const h = container.clientHeight / 2 - 40;
-                    const t = elapsed * 0.003; // speed
+                    const t = elapsed * 0.003; 
                     
                     let x=0, y=0;
-                    
                     switch(animType) {
-                        case 0: // Infinity (Lemniscate)
-                            x = (w * Math.cos(t)) / (1 + Math.pow(Math.sin(t), 2));
-                            y = (h * Math.sin(t) * Math.cos(t)) / (1 + Math.pow(Math.sin(t), 2));
-                            break;
-                        case 1: // Horizontal
-                            x = w * Math.sin(t);
-                            y = 0;
-                            break;
-                        case 2: // Vertical
-                            x = 0;
-                            y = h * Math.sin(t);
-                            break;
-                        case 3: // Diagonal
-                            x = w * Math.sin(t);
-                            y = h * Math.sin(t);
-                            break;
-                        case 4: // Circle
-                            x = w * Math.cos(t);
-                            y = h * Math.sin(t);
-                            break;
+                        case 0: x = (w * Math.cos(t)) / (1 + Math.pow(Math.sin(t), 2)); y = (h * Math.sin(t) * Math.cos(t)) / (1 + Math.pow(Math.sin(t), 2)); break;
+                        case 1: x = w * Math.sin(t); y = 0; break;
+                        case 2: x = 0; y = h * Math.sin(t); break;
+                        case 3: x = w * Math.sin(t); y = h * Math.sin(t); break;
+                        case 4: x = w * Math.cos(t); y = h * Math.sin(t); break;
                     }
 
                     target.style.transform = `translate(${x}px, ${y}px)`;
@@ -773,7 +937,6 @@
                 sessionState.animFrame = requestAnimationFrame(animate);
             },
 
-            // --- Reading Logic ---
             runReading() {
                 const sIdx = sessionState.stageIndex;
                 if (sessionState.chunkIdx >= sessionState.chunks.length) {
@@ -781,24 +944,22 @@
                     return;
                 }
 
-                // Render current chunk
                 if (sIdx === 1) this.renderWord();
                 else if (sIdx === 2) this.renderSentence();
                 else if (sIdx === 3) this.renderParagraph();
 
-                // Update Progress
                 document.getElementById('prog-current').innerText = sessionState.chunkIdx + 1;
                 document.getElementById('prog-bar').style.width = `${((sessionState.chunkIdx + 1) / sessionState.chunks.length) * 100}%`;
 
-                // Delay calculation
                 const chunkStr = sessionState.chunks[sessionState.chunkIdx];
                 const wordsCount = chunkStr.split(/\s+/).length;
                 let delay = (60000 / sessionState.wpm) * wordsCount;
 
-                if (sIdx === 1 && chunkStr.match(/[,.;!?]/)) delay *= 1.5; // punctuation pause
-                if (sIdx === 3) delay = wordsCount * 250; // ample time for paragraph, user can manually click next if needed
+                if (sIdx === 1 && chunkStr.match(/[,.;!?]/)) delay *= 1.5; 
+                if (sIdx === 3) delay = wordsCount * 250; 
                 
                 sessionState.chunkIdx++;
+                ui.tick(); // subtle audio tick
 
                 sessionState.timer = setTimeout(() => {
                     this.runReading();
@@ -813,10 +974,10 @@
                 const right = word.slice(pivot + 1);
 
                 document.getElementById('text-display').innerHTML = `
-                    <div class="orp-container text-4xl md:text-6xl font-mono tracking-wide">
-                        <span class="orp-left text-white/80">${left}</span>
+                    <div class="orp-container text-3xl sm:text-5xl md:text-7xl font-mono tracking-wider break-all sm:break-normal">
+                        <span class="orp-left">${left}</span>
                         <span class="orp-center">${center}</span>
-                        <span class="orp-right text-white/80">${right}</span>
+                        <span class="orp-right">${right}</span>
                     </div>
                 `;
             },
@@ -824,7 +985,7 @@
             renderSentence() {
                 const sentence = sessionState.chunks[sessionState.chunkIdx] || "";
                 document.getElementById('text-display').innerHTML = `
-                    <div class="text-2xl md:text-4xl font-bold leading-tight text-white/90">
+                    <div class="text-2xl sm:text-3xl md:text-5xl font-bold leading-tight text-white/95 tracking-tight px-2">
                         ${sentence}
                     </div>
                 `;
@@ -832,20 +993,25 @@
 
             renderParagraph() {
                 const para = sessionState.chunks[sessionState.chunkIdx] || "";
-                // Remove center alignment for paragraph
                 document.getElementById('text-display').innerHTML = `
-                    <div class="text-left text-lg md:text-xl font-medium leading-relaxed text-white/80 p-4">
+                    <div class="text-left text-base sm:text-lg md:text-2xl font-medium leading-relaxed text-white/90 p-2 sm:p-4 md:px-10">
                         ${para}
                     </div>
                 `;
-                // In paragraph mode, allow manual completion
                 if(sessionState.chunkIdx === 0) {
-                    setTimeout(() => { this.finishStage(); }, 2000); // just to show it, then rely on user or timer
+                    setTimeout(() => { this.finishStage(); }, 2000); 
                 }
             }
         };
 
-        // --- QUIZ SYSTEM ---
+        // Live WPM Slider event
+        document.getElementById('wpm-slider').addEventListener('input', (e) => {
+            sessionState.wpm = parseInt(e.target.value);
+            document.getElementById('trainer-wpm').innerText = sessionState.wpm;
+            document.getElementById('slider-wpm-val').innerText = sessionState.wpm;
+        });
+
+        // --- STREAMING_CHUNK:Quiz & Results System ---
         const quiz = {
             init() {
                 app.navigate('quiz');
@@ -855,41 +1021,40 @@
                 container.innerHTML = '';
                 document.getElementById('btn-submit-quiz').disabled = true;
 
-                const questions = sessionState.dayObj.questions;
+                const questions = sessionState.levelObj.questions;
                 
                 questions.forEach((q, qIdx) => {
                     const block = document.createElement('div');
-                    block.className = "bg-black/30 p-6 md:p-8 rounded-[2rem] border border-white/5";
+                    block.className = "bg-dark/50 p-5 sm:p-6 md:p-8 rounded-[1.5rem] md:rounded-3xl border border-glassBorder shadow-inner transition-all hover:border-white/10";
                     
                     let optsHtml = q.opts.map((opt, oIdx) => `
-                        <label class="flex items-center gap-4 p-4 rounded-xl border border-transparent bg-white/5 hover:bg-white/10 cursor-pointer transition-all quiz-label-${qIdx}" id="lbl-${qIdx}-${oIdx}" onclick="quiz.select(${qIdx}, ${oIdx})">
-                            <div class="w-6 h-6 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0 quiz-radio-${qIdx}" id="rad-${qIdx}-${oIdx}">
-                                <div class="w-3 h-3 rounded-full bg-bee opacity-0 transform scale-50 transition-all" id="dot-${qIdx}-${oIdx}"></div>
+                        <label class="flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-xl md:rounded-2xl border border-transparent bg-white/5 hover:bg-white/10 cursor-pointer transition-all quiz-label-${qIdx}" id="lbl-${qIdx}-${oIdx}" onclick="quiz.select(${qIdx}, ${oIdx})">
+                            <div class="w-5 h-5 md:w-6 md:h-6 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0 quiz-radio-${qIdx}" id="rad-${qIdx}-${oIdx}">
+                                <div class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-bee opacity-0 transform scale-50 transition-all duration-300" id="dot-${qIdx}-${oIdx}"></div>
                             </div>
-                            <span class="text-slate-200 font-medium">${opt}</span>
+                            <span class="text-slate-200 font-medium text-sm sm:text-base md:text-lg break-words leading-tight">${opt}</span>
                         </label>
                     `).join('');
 
                     block.innerHTML = `
-                        <div class="flex items-center gap-2 mb-4">
-                            <span class="px-2 py-1 rounded bg-bee/10 text-bee text-xs font-bold uppercase tracking-wider">${q.type}</span>
+                        <div class="flex items-center gap-2 mb-3 md:mb-4">
+                            <span class="px-2 md:px-3 py-1 rounded-md md:rounded-lg bg-bee/10 text-bee text-[10px] md:text-xs font-bold uppercase tracking-widest border border-bee/20">${q.type}</span>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-6 leading-snug">${q.q}</h3>
-                        <div class="space-y-3">${optsHtml}</div>
+                        <h3 class="text-lg sm:text-xl md:text-2xl font-bold text-white mb-4 md:mb-6 leading-snug">${q.q}</h3>
+                        <div class="space-y-2.5 md:space-y-3">${optsHtml}</div>
                     `;
                     container.appendChild(block);
                 });
             },
 
             select(qIdx, oIdx) {
+                ui.interact();
                 sessionState.quizAnswers[qIdx] = oIdx;
                 
-                // Reset styling for this question
-                document.querySelectorAll(`.quiz-label-${qIdx}`).forEach(el => el.className = `flex items-center gap-4 p-4 rounded-xl border border-transparent bg-white/5 hover:bg-white/10 cursor-pointer transition-all quiz-label-${qIdx}`);
-                document.querySelectorAll(`.quiz-radio-${qIdx}`).forEach(el => el.className = `w-6 h-6 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0 quiz-radio-${qIdx}`);
+                document.querySelectorAll(`.quiz-label-${qIdx}`).forEach(el => el.className = `flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-xl md:rounded-2xl border border-transparent bg-white/5 hover:bg-white/10 cursor-pointer transition-all quiz-label-${qIdx}`);
+                document.querySelectorAll(`.quiz-radio-${qIdx}`).forEach(el => el.className = `w-5 h-5 md:w-6 md:h-6 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0 quiz-radio-${qIdx}`);
                 document.querySelectorAll(`[id^="dot-${qIdx}"]`).forEach(el => { el.classList.remove('opacity-100', 'scale-100'); el.classList.add('opacity-0', 'scale-50'); });
 
-                // Active styling
                 const lbl = document.getElementById(`lbl-${qIdx}-${oIdx}`);
                 const rad = document.getElementById(`rad-${qIdx}-${oIdx}`);
                 const dot = document.getElementById(`dot-${qIdx}-${oIdx}`);
@@ -899,15 +1064,14 @@
                 dot.classList.remove('opacity-0', 'scale-50');
                 dot.classList.add('opacity-100', 'scale-100');
 
-                // Check completion
-                const totalQ = sessionState.dayObj.questions.length;
+                const totalQ = sessionState.levelObj.questions.length;
                 if (Object.keys(sessionState.quizAnswers).length === totalQ) {
                     document.getElementById('btn-submit-quiz').disabled = false;
                 }
             },
 
             submit() {
-                const qs = sessionState.dayObj.questions;
+                const qs = sessionState.levelObj.questions;
                 let correct = 0;
                 
                 qs.forEach((q, idx) => {
@@ -926,68 +1090,161 @@
                 const u = appState.user;
                 const wpm = sessionState.wpm;
                 
-                // UI Elements
                 const title = document.getElementById('result-title');
                 const msg = document.getElementById('result-msg');
                 const circle = document.getElementById('result-circle');
                 const scoreTxt = document.getElementById('result-score');
                 const bgGlow = document.getElementById('result-bg-glow');
                 const btnAction = document.getElementById('btn-result-action');
+                const congratsCard = document.getElementById('congrats-card');
                 
                 document.getElementById('result-wpm').innerText = wpm;
 
-                // Animate Score Ring
-                const circumference = 2 * Math.PI * 45; // r=45
+                const circumference = 2 * Math.PI * 45; 
                 const offset = circumference - (score / 100) * circumference;
                 
                 setTimeout(() => {
                     circle.style.strokeDashoffset = offset;
                     scoreTxt.innerText = `${score}%`;
-                }, 300);
+                }, 400);
 
                 if (passed) {
+                    ui.success();
                     title.innerText = "Mükemmel! 🐝";
-                    msg.innerText = "Yeterli anlama oranına ulaştın. Hız ve anlama dengen çok iyi. Bir sonraki güne geçebilirsin.";
-                    circle.style.stroke = '#4ade80'; // green
-                    bgGlow.className = 'absolute inset-0 bg-green-500/10 filter blur-3xl rounded-full';
+                    msg.innerText = "Yeterli anlama oranına ulaştın. Hız ve anlama dengen çok iyi. Bir sonraki seviyeye geçebilirsin.";
+                    circle.style.stroke = '#10b981'; 
+                    bgGlow.className = 'absolute inset-0 bg-emerald-500/10 filter blur-[100px] rounded-full pointer-events-none transition-colors duration-1000';
                     
+                    // Show random fun card
+                    const rMsg = congratsMessages[Math.floor(Math.random() * congratsMessages.length)];
+                    document.getElementById('congrats-text').innerText = rMsg;
+                    congratsCard.classList.remove('hidden');
+
                     const xpGained = 250;
                     document.getElementById('result-xp').innerText = '+' + xpGained;
                     
-                    // Update User Profile
                     u.xp += xpGained;
-                    u.level = Math.floor(u.xp / 1000) + 1;
+                    u.rank = Math.floor(u.xp / 1000) + 1;
                     u.stats.compSum += score;
                     u.stats.compCount += 1;
                     if (wpm > u.stats.bestWpm) u.stats.bestWpm = wpm;
                     
-                    if (u.day === sessionState.dayObj.day && u.day < 50) {
-                        u.day++;
+                    if (u.levelProgress === sessionState.levelObj.level && u.levelProgress < 50) {
+                        u.levelProgress++;
                     }
-                    
                     app.save();
 
-                    btnAction.innerText = "Sonraki Güne Geç";
-                    btnAction.onclick = () => { app.navigate('dashboard'); };
+                    btnAction.innerText = "Sonraki Seviyeye Geç";
+                    btnAction.onclick = () => { ui.interact(); app.navigate('dashboard'); };
+                    document.getElementById('share-container').classList.remove('hidden');
                     
                 } else {
+                    ui.fail();
+                    congratsCard.classList.add('hidden');
+                    document.getElementById('share-container').classList.add('hidden');
                     title.innerText = "Tekrar Dene 🎯";
-                    msg.innerText = "Anlama oranın %75'in altında kaldı. Hız artışı, anlamı kaybetmeden yapılmalıdır. Günü tekrar et.";
-                    circle.style.stroke = '#fb7185'; // red
-                    bgGlow.className = 'absolute inset-0 bg-red-500/10 filter blur-3xl rounded-full';
+                    msg.innerText = "Anlama oranın %75'in altında kaldı. Hız artışı, anlamı kaybetmeden yapılmalıdır. Seviyeyi tekrar et.";
+                    circle.style.stroke = '#f43f5e'; 
+                    bgGlow.className = 'absolute inset-0 bg-rose-500/10 filter blur-[100px] rounded-full pointer-events-none transition-colors duration-1000';
                     
                     document.getElementById('result-xp').innerText = '+50';
-                    u.xp += 50; // Consolation XP
+                    u.xp += 50; 
                     app.save();
 
-                    btnAction.innerText = "Günü Tekrar Et";
-                    btnAction.onclick = () => { lesson.open(sessionState.dayObj.day); };
+                    btnAction.innerText = "Seviyeyi Tekrar Et";
+                    btnAction.onclick = () => { ui.interact(); lesson.open(sessionState.levelObj.level); };
                 }
             }
         };
 
-        // --- INIT ---
+        // --- STREAMING_CHUNK:Certificate & Sharing System ---
+        const certManager = {
+            async renderCertificate() {
+                const u = appState.user;
+                if (!u) return null;
+                
+                document.getElementById('cert-fullname').innerText = `${u.name} ${u.surname || ''}`;
+                document.getElementById('cert-level-display').innerText = `Seviye ${u.levelProgress - 1}`;
+                document.getElementById('cert-wpm').innerText = `${u.stats.bestWpm} WPM`;
+                
+                const avgComp = u.stats.compCount > 0 ? Math.round(u.stats.compSum / u.stats.compCount) : 0;
+                document.getElementById('cert-comp').innerText = `%${avgComp}`;
+
+                const node = document.getElementById('certificate-node');
+                
+                try {
+                    const canvas = await html2canvas(node, {
+                        scale: 2, 
+                        backgroundColor: '#030712'
+                    });
+                    return canvas;
+                } catch (e) {
+                    console.error("Sertifika oluşturulamadı:", e);
+                    ui.toast("Sertifika oluşturulurken bir hata meydana geldi.");
+                    return null;
+                }
+            },
+            
+            async generateAndDownload() {
+                ui.interact();
+                const btn = event.currentTarget;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin text-lg"></i> Hazırlanıyor...';
+                
+                const canvas = await this.renderCertificate();
+                if (canvas) {
+                    const link = document.createElement('a');
+                    link.download = `BeeReady-Sertifika-${appState.user.name}.jpg`;
+                    link.href = canvas.toDataURL('image/jpeg', 0.9);
+                    link.click();
+                }
+                
+                btn.innerHTML = originalText;
+            },
+
+            async shareLevelUp() {
+                ui.interact();
+                const u = appState.user;
+                const shareText = `🐝 BeeReady'de Seviye ${u.levelProgress - 1}'i tamamladım! Bilişsel Hızlı Okuma ve Anlama eğitimime son hızla devam ediyorum. Maksimum Hızım: ${u.stats.bestWpm} WPM. 🚀 #BeeReady #HızlıOkuma`;
+                
+                const btn = event.currentTarget;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin text-xl"></i> Hazırlanıyor...';
+
+                if (navigator.share) {
+                    try {
+                        const canvas = await this.renderCertificate();
+                        if (canvas && navigator.canShare) {
+                            canvas.toBlob(async (blob) => {
+                                const file = new File([blob], 'beeready_level.jpg', { type: 'image/jpeg' });
+                                if (navigator.canShare({ files: [file] })) {
+                                    await navigator.share({
+                                        title: 'BeeReady İlerlemesi',
+                                        text: shareText,
+                                        files: [file]
+                                    });
+                                } else {
+                                    await navigator.share({ title: 'BeeReady İlerlemesi', text: shareText });
+                                }
+                            }, 'image/jpeg', 0.9);
+                        } else {
+                            await navigator.share({ title: 'BeeReady İlerlemesi', text: shareText });
+                        }
+                    } catch (err) {
+                        console.error('Paylaşım iptal edildi veya başarısız:', err);
+                    }
+                } else {
+                    navigator.clipboard.writeText(shareText).then(() => {
+                        ui.toast("Paylaşım metni kopyalandı! Sosyal medyada yapıştırıp paylaşabilirsiniz.");
+                    });
+                }
+                btn.innerHTML = originalText;
+            }
+        };
+
+        // --- STREAMING_CHUNK:Bootstrapping Application ---
         window.onload = () => {
+            document.body.addEventListener('click', () => { ui.initAudio(); }, { once: true });
             app.init();
         };
 
